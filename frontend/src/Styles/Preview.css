@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.preview-page {
+  min-height: 100vh;
+  background: #0f1117;
+  padding: 50px 20px;
+  font-family: "Inter", sans-serif;
+}
+
+.preview-navbar {
+  max-width: 850px;
+  margin: auto;
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.back-btn,
+.download-btn {
+  border: none;
+  cursor: pointer;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: .1s;
+}
+
+.back-btn {
+  background: white !important;
+  color: #111827;
+}
+
+.back-btn:hover {
+  background: #ececec;
+}
+
+.download-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.download-btn:hover {
+ background: #2564ebb3;
+}
+
+.resume {
+  width: 794px;
+  margin: auto;
+  background: white;
+  padding: 60px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.resume-header {
+  text-align: center;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 25px;
+  margin-bottom: 35px;
+}
+
+.resume-header h1 {
+  font-size: 38px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.resume-header h3 {
+  color: #121212;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.resume-header p {
+  color: #6b7280;
+  margin-top: 6px;
+  font-size: 15px;
+}
+
+.resume-section {
+  margin-top: 35px;
+}
+
+.resume-section h2 {
+  color: #111827;
+
+  font-size: 20px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  border-bottom: 2px solid #080808;
+
+  padding-bottom: 8px;
+
+  margin-bottom: 20px;
+}
+
+.resume-section p {
+  color: #444;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.item {
+  margin-bottom: 25px;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 8px;
+}
+
+.item-header h3 {
+  color: #111827;
+  font-size: 18px;
+}
+
+.item-header span {
+  color: gray;
+  font-size: 14px;
+}
+
+.item h4 {
+  color: #555;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.item ul {
+  padding-left: 22px;
+}
+
+.item li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+  color: #444;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skills span {
+  background: #eef2ff;
+  color: #000000;
+
+  padding: 8px 18px;
+
+  border-radius: 30px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+
+  .resume {
+    width: 100%;
+    padding: 35px;
+  }
+
+  .preview-navbar {
+    width: 100%;
+  }
+
+}
+
+@media print {
+
+  .preview-navbar {
+    display: none;
+  }
+
+  .preview-page {
+    padding: 0;
+    background: white;
+    min-height: auto;
+  }
+
+  .resume {
+    width: auto;
+    min-height: auto;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+@page {
+  size: A4;
+  margin: 15mm;
+}
