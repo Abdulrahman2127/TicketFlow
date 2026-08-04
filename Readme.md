@@ -29,7 +29,9 @@ ResumeAI is a modern AI-powered resume builder designed to help users create pro
 
 ## 📸 Preview
 
-> Add screenshots of the landing page here.
+<img src="./frontend/screenshots/Home.png" alt="Home Page">
+<img src="./frontend/screenshots/content.png" alt="Content">
+<img src="./frontend/screenshots/sendPost.png" alt="Post">
 
 ## 📄 License
 
