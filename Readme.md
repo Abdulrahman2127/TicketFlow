@@ -27,12 +27,3 @@ ResumeAI is a modern AI-powered resume builder designed to help users create pro
 - JavaScript
 - Vite
 
-## 📸 Preview
-
-<img src="./frontend/screenshots/Home.png" alt="Home Page">
-<img src="./frontend/screenshots/content.png" alt="Content">
-<img src="./frontend/screenshots/sendPost.png" alt="Post">
-
-## 📄 License
-
-This project is created for learning and portfolio purposes.
