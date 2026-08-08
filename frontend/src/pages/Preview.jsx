@@ -35,6 +35,7 @@ export default function Preview() {
 if (!resume) {
   return <h2>Loading...</h2>;
 }
+
   return (
     <div className="preview-page">
       <div className="preview-navbar">

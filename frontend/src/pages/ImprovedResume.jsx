@@ -24,6 +24,7 @@ export default function Improved() {
 
   const generateResume  = async () => {
     try {
+      console.log(import.meta.env.VITE_API_URL);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/resume/generate`,
         formData
