@@ -1,0 +1,192 @@
+.getstarted-container {
+  min-height: 100vh;
+  width: 100%;
+
+  padding: 30px 20px;
+
+  box-sizing: border-box;
+
+  
+
+  background: #0B0F14;
+}
+
+.getstarted-cards {
+  width: 100%;
+  max-width: 900px;
+
+  margin-top: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+
+  gap: 35px;
+
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+
+  min-height: 260px;
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  background-color: #111827 !important;
+
+  border: 1px solid #1E293B;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: 
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.card h3 {
+  margin: 0 0 15px;
+
+  color: #F8FAFC;
+
+  font-size: 24px;
+}
+
+.card p {
+  margin: 0;
+
+  color: #94A3B8;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+
+.getStarted-btn {
+  width: fit-content;
+
+  margin-top: 25px;
+
+  border: none;
+
+  background-color: #2563EB !important;
+
+  color: #FFFFFF;
+
+  padding: 13px 20px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.getStarted-btn:hover {
+  background-color: #1D4ED8 !important;
+}
+
+
+/* Tablet */
+
+@media (max-width: 800px) {
+
+    
+  .getstarted-cards {
+    gap: 20px;
+
+    max-width: 700px;
+  }
+
+  .card {
+    padding: 28px;
+
+    min-height: 240px;
+  }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .getstarted-container {
+    padding: 25px 15px;
+  }
+  
+
+  .getstarted-cards {
+    flex-direction: column;
+
+    align-items: center;
+
+    margin-top: 40px;
+
+    gap: 20px;
+  }
+
+  .card {
+    max-width: 500px;
+
+    min-height: 220px;
+
+    padding: 25px;
+  }
+
+  .card h3 {
+    font-size: 22px;
+  }
+   .getStarted-btn{
+    display: flex;
+  }
+
+}
+
+
+/* Small phones */
+
+@media (max-width: 400px) {
+
+  .getstarted-container {
+    padding: 20px 12px;
+  }
+
+  
+
+  .card {
+    padding: 22px;
+
+    min-height: 210px;
+  }
+
+  .card h3 {
+    font-size: 20px;
+  }
+
+  .card p {
+    font-size: 14px;
+  }
+
+  .getStarted-btn{
+    display: flex;
+  }
+
+}

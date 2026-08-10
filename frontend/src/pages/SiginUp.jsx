@@ -35,7 +35,7 @@ export default function SiginUp() {
           alignItems: 'center',
         }}
       >
-        <div className="Card">
+        <div className="signup-card">
           <div
             style={{
               position: 'absolute',
@@ -58,16 +58,16 @@ export default function SiginUp() {
               ← Back to Home
             </button>
           </div>
-          <div style={{marginTop: "40px" , display: "flex" , flexDirection: "column" , gap: "10px"}}>
-            <h1>Create Account</h1>
-            <p style={{color: "#7b7a7a"}}>Create your account to continue</p>
+          <div style={{marginTop: "20px", display: "flex" , flexDirection: "column" , gap: "0xp"}}>
+            <h1 style={{marginBottom: "7px"}}>Create Account</h1>
+            <p style={{color: "#7b7a7a", marginTop: "0px "}}>Create your account to continue</p>
           </div>
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
-              marginTop: '30px',
+              marginTop: '0px',
             }}
           >
             <div className='inputs'>
@@ -83,13 +83,15 @@ export default function SiginUp() {
               <input value={password} onChange={(e) => {setPassword(e.target.value)}} placeholder="Create a strong password" type='password' />
             </div>
             
-            <div>
+          <section>
+              <div>
             <button onClick={postUser} disabled={!userName || !email || !password} className='CreateBtn'>Create Account</button>
           </div>
-          <div  style={{display: "flex" , justifyContent: "center" , gap: "5px"}}>
+          <div  style={{display: "flex" , justifyContent: "center" , gap: "5px" , alignItems: "center"}}>
             <p>Already have an account?</p>
-            <div><Link to="/login" className='login-link'> Sign In</Link></div>
+            <div><Link to="/login" className='login-link'>Sign In</Link></div>
           </div>
+          </section>
           </div>
         </div>
       </Container>

@@ -2,8 +2,8 @@ import express from "express";
 import cors from 'cors'
 import dotenv from 'dotenv'
 import OpenAI from 'openai'
-import resumeRoutes from "./routes/resumeRoutes.js"
-import authRoutes from "./routes/authResume.js"
+import employeeRoutes from "./routes/employeeRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
 import connectDB from "./config/db.js";
 dotenv.config()
 const app = express()
@@ -18,8 +18,8 @@ app.get("/", (req,res) => {
 }
 )
 console.log(process.env.OPENROUTER_API_KEY);
-app.use("/api/resume" , resumeRoutes );
-app.use("/api/authentication" , authRoutes );
+app.use("/api/authentication" , employeeRoutes );
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT , () => {
 

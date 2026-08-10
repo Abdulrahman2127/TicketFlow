@@ -1,24 +1,32 @@
-.Card {
-  height: 57vh !important;
+.signup-card {
   width: 430px;
-  text-align: center;
+  max-width: 80%;
+  min-height: 20px;
+  height: 470px;
   padding: 20px;
-  border-radius: 15px;
-  background-color: rgb(255, 255, 255);
-  color: black;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 18px;
+  background-color: #ffffff;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
 }
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
-input {
+.inputs input {
   width: 100%;
-  padding: 15px;
+  height: 52px;
+  padding: 0 16px;
+  box-sizing: border-box;
   border-radius: 10px;
-  border: rgb(174, 174, 174) solid 1px;
-  font-size: 15px;
+  border: 1px solid #cbd5e1;
+  font-size: 16px;
+  color: #0f172a;
 }
 
 .CreateBtn {

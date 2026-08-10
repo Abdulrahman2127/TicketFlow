@@ -10,7 +10,7 @@ export default function Home(){
         {/* NAVBARR */}
       <div className="navbar">
         <div style={{ marginLeft: '70px' }}>
-          <h1 style={{ color: '#2563EB' }}>ResumeAI</h1>
+          <h1 style={{ color: '#2563EB' }}>TicketFlow</h1>
         </div>
         <div style={{ display: "flex" , justifyContent: "center", alignItems: "center" , gap: "20px" , marginRight: "50px" , color: "#ffffff78" , cursor: "pointer"}}>
           
@@ -19,9 +19,6 @@ export default function Home(){
           <a href="#roadmap">Coming Soon ⭐</a>
           <a href="#homeItWorks">How it Works</a>
           <Link to="/login">Loge In</Link>
-          <Link to="/signup">Sign Up</Link>
-
-          
         </div>
       </div>
       <hr></hr>
@@ -30,18 +27,15 @@ export default function Home(){
         <div className="hero-content">
           <div className="hero-left">
             <h1 style={{ color: '#FFFFFF' }}>
-              Build Your Professional Resume with AI
+              Get Support Solve Problems Faster
             </h1>
 
             <p>
-              Create, improve, and manage professional resumes in minutes using
-              AI.
+              Submit, track, and manage your support requests in one simple platform.
             </p>
 
             <div className="hero-buttons">
-              <Link to="/improved">
-              <button className="getStarted"
-                style={{
+              <Link style={{
                   background: '#2563EB',
                   border: 'none',
                   padding: '15px',
@@ -49,9 +43,11 @@ export default function Home(){
                   fontWeight: 'bold',
                   borderRadius: '8px',
                 }}
-              >
-                Get Started
-              </button>
+               to="/getStarted" className="getStarted">
+              
+                
+                Create a Ticket
+              
               </Link>
               <a href="#Features">
               <button className="learnMore"
@@ -64,15 +60,15 @@ export default function Home(){
                   borderRadius: '8px',
                 }}
               >
-                Learn More →
+                How It Works →
               </button>
               </a>
             </div>
 
             <div className="hero-features">
-              <span>✔ AI Powered</span>
-              <span>✔ PDF Export</span>
-              <span>✔ No Account Required</span>
+              <span>✔ Easy Ticket Management</span>
+              <span>✔ Real-Time Status</span>
+              <span>✔ Fast Support</span>
             </div>
           </div>
 
@@ -81,16 +77,16 @@ export default function Home(){
       </section>
       <hr></hr>
       <section id="Features" className="details">
-        <h1 style={{ fontSize: '45px', fontWeight: 'bold' }}>Why ResumeAI?</h1>
+        <h1 style={{ fontSize: '45px', fontWeight: 'bold' }}>Why TicketFlow?</h1>
 
         <div className="details-container">
-          <div>🤖 AI Writing</div>
+          <div>🎫 Easy Ticket Creation</div>
 
-          <div>📄 ATS Friendly</div>
+          <div>🕐 Real-Time Status</div>
 
-          <div>☁ Save Multiple Resumes</div>
+          <div>👥 Team Support</div>
 
-          <div>📥 Export PDF</div>
+          <div>📊 Ticket Management</div>
         </div>
       </section>
       <hr></hr>
@@ -99,33 +95,32 @@ export default function Home(){
 
         <div className="steps">
           <div className="step">
-            <div className="step-icon">📝</div>
+            <div className="step-icon">🎫</div>
 
-            <h3>Fill Your Information</h3>
+            <h3>Submit a Ticket</h3>
 
             <p>
-              Enter your personal details, skills, education, and experience.
+              Describe your issue and provide the details our support team needs.
             </p>
           </div>
 
           <div className="step">
-            <div className="step-icon">🤖</div>
+            <div className="step-icon">🔍</div>
 
-            <h3>AI Improves It</h3>
+            <h3>Track Your Request</h3>
 
             <p>
-              AI rewrites your resume, enhances descriptions, and creates a
-              professional summary.
+              Follow your ticket status and communicate with the support team in one place.
             </p>
           </div>
 
           <div className="step">
-            <div className="step-icon">📥</div>
+            <div className="step-icon">✅ </div>
 
-            <h3>Download or Save</h3>
+            <h3>Get It Resolved</h3>
 
             <p>
-              Export your resume as PDF or save multiple resumes.
+              Our support team handles your request and keeps you updated until the issue is resolved.
             </p>
           </div>
         </div>

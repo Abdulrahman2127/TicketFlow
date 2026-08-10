@@ -1,0 +1,31 @@
+
+.section-card{
+    margin-top: 40px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    height: 70vh;
+    
+}
+
+.card-dashboard {
+  background: #F8FAFC;
+  width: 270px;
+  min-height: 145px;
+  max-height: 100px;
+  padding: 20px;
+  box-sizing: border-box;
+  color: #0F172A;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+p{
+    color: #64748B;
+}
+
+.view-resume:hover{
+    color: #1846acfc !important;
+    
+}

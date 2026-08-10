@@ -1,49 +1,48 @@
-.login-page {
+.admin-page {
   min-height: 100vh;
   width: 100%;
+  padding: 40px 20px;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 30px 20px;
 
   box-sizing: border-box;
 
-  background: #0B0F14;
+  background: #0b0f14;
 }
-
 
 /* Card */
 
-.Card-Login {
+.admin-card {
   width: 100%;
-  max-width: 430px;
+  max-width: 520px;
 
   box-sizing: border-box;
 
-  padding: 25px;
+  padding: 32px;
 
+  background: #111827;
+  border: 1px solid #1e293b;
   border-radius: 18px;
 
-  background: #FFFFFF;
-  color: #0F172A;
+  color: #f8fafc;
 
   display: flex;
   flex-direction: column;
 }
 
-
 /* Back button */
 
-.backBtn {
+.back-btn {
   align-self: flex-start;
 
   padding: 0;
 
-  border: none;
   background: transparent;
+  border: none;
 
-  color: #0F172A;
+  color: #f8fafc;
 
   font-size: 14px;
   font-weight: 600;
@@ -51,56 +50,47 @@
   cursor: pointer;
 }
 
-.backBtn:hover {
+.back-btn:hover {
   text-decoration: underline;
 }
 
-
 /* Header */
 
-.login-header {
+.admin-header {
   text-align: center;
-
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin: 25px 0 28px;
 }
 
-.login-header h1 {
+.admin-header h1 {
   margin: 0;
-
   font-size: 40px;
   line-height: 1.2;
 }
 
-.login-header p {
-  margin: 10px 0 0;
+.admin-header p {
+  margin: 12px 0 0;
 
-  color: #64748B;
+  color: #94a3b8;
 
-  font-size: 17px;
+  font-size: 16px;
 }
-
 
 /* Form */
 
-.login-form {
+.admin-form {
   display: flex;
   flex-direction: column;
-
-  gap: 18px;
+  gap: 16px;
 }
 
-
-.input-group {
+.form-group {
   display: flex;
   flex-direction: column;
-
   gap: 7px;
 }
 
-
-.input-group label {
-  color: #0F172A;
+.form-group label {
+  color: #e2e8f0;
 
   font-size: 14px;
   font-weight: 600;
@@ -108,46 +98,39 @@
   text-align: left;
 }
 
-
-.input-group input {
+.form-group input {
   width: 100%;
-  height: 50px;
+  height: 48px;
 
-  padding: 0 15px;
+  padding: 0 14px;
 
   box-sizing: border-box;
 
-  border-radius: 10px;
-
-  border: 1px solid #CBD5E1;
-
-  background: #FFFFFF;
-
-  color: #0F172A;
+  border-radius: 9px;
+  border: none;
+  background: #ffffff;
+  color: #0f172a;
   font-size: 15px;
   transition: 0.2s;
 }
 
-
-.input-group input::placeholder {
-  color: #94A3B8;
+.form-group input::placeholder {
+  color: #94a3b8;
 }
 
+/* Create button */
 
-.CreateBtn {
+.create-btn {
   width: 100%;
   height: 50px;
 
   margin-top: 5px;
 
-  padding: 0;
-
   border: none;
-
   border-radius: 10px;
 
-  background: #2563EB;
-  color: #FFFFFF;
+  background: #2563eb;
+  color: #ffffff;
 
   font-size: 16px;
   font-weight: 600;
@@ -157,121 +140,100 @@
   transition: 0.2s;
 }
 
-
-.CreateBtn:hover {
-  background: #1D4ED8;
+.create-btn:hover {
+  background: #1d4ed8;
 }
 
-
-.CreateBtn:disabled {
-  background: #94A3B8 !important;
-
-  cursor: not-allowed !important;
-
+.create-btn:disabled{
+  background: #94a3b8;
+  cursor: not-allowed;
   opacity: 0.7;
 }
 
+/* Login */
 
-/* Signup */
-
-.signup-text {
+.login-text {
   display: flex;
-
   justify-content: center;
   align-items: center;
 
   gap: 5px;
 
   margin-top: 25px;
-}
-
-
-.signup-text p {
-  margin: 0;
-
-  color: #64748B;
 
   font-size: 14px;
 }
 
+.login-text p {
+  margin: 0;
+  color: #64748b;
+}
 
-.login-link {
-  color: #2563EB;
-
-  text-decoration: none;
+.login-text a {
+  color: #2563eb;
 
   font-weight: 600;
+
+  text-decoration: none;
 }
 
-
-.login-link:hover {
-  color: #1D4ED8;
-
+.login-text a:hover {
+  color: #1d4ed8;
   text-decoration: underline;
 }
-
 
 /* Tablet */
 
 @media (max-width: 600px) {
-
-  .login-page {
-    padding: 20px 15px;
-
-    
+  .admin-page {
+    padding: 25px 15px;
+    align-items: flex-start;
   }
 
-  .Card-Login {
-    margin-top: 30px;
-
-    padding: 28px 22px;
+  .admin-card {
+    padding: 25px 20px;
+    margin-top: 20px;
   }
 
-  .login-header h1 {
+  .admin-header {
+    margin-top: 22px;
+  }
+
+  .admin-header h1 {
     font-size: 32px;
   }
-
 }
-
 
 /* Mobile */
 
 @media (max-width: 400px) {
-
-  .login-page {
+  .admin-page {
     padding: 15px 10px;
   }
 
-  .Card-Login {
-    padding: 25px 18px;
-
+  .admin-card {
+    padding: 22px 16px;
     border-radius: 14px;
   }
 
-  .login-header {
-    margin-top: 25px;
+  .admin-header h1 {
+    font-size: 27px;
   }
 
-  .login-header h1 {
-    font-size: 28px;
+  .admin-header p {
+    font-size: 14px;
   }
 
-  .login-header p {
-    font-size: 15px;
+  .form-group input {
+    height: 46px;
   }
 
-  .input-group input {
-    height: 47px;
-  }
-
-  .CreateBtn {
+  .create-btn {
     height: 48px;
   }
 
-  .signup-text {
+  .login-text {
     flex-direction: column;
-
     gap: 3px;
   }
-
 }

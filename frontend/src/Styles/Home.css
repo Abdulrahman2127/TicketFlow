@@ -58,6 +58,7 @@ hr {
   margin-top: 35px;
 }
 
+
 .hero-features {
   display: flex;
   gap: 20px;
@@ -187,7 +188,7 @@ button:hover {
 
 ::-webkit-scrollbar-thumb {
   background: rgb(0, 31, 59);
-  border-radius: 10px;
+  
 }
 a {
   color: #ffffffcb;
@@ -374,9 +375,8 @@ html {
     font-size: 16px;
   }
 
-  .hero-buttons  {
-    flex-direction: column;
-    width: 100%;
+  .getStarted{
+    display: flex;
   }
 
   .hero-buttons button  {
