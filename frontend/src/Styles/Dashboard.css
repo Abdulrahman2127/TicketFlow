@@ -1,18 +1,17 @@
 .dashboard-header{
-    display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
 }
 
-
 .dashboard-header p {
+  
   margin-top: 8px;
   color: #6b7280;
   font-size: 15px;
   
 }
-
 
 /* Statistics */
 
@@ -50,6 +49,8 @@
   color: #9ca3af;
   font-size: 12px;
 }
+
+
 
 
 

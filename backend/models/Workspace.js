@@ -14,6 +14,12 @@ const workspaceSchema = new mongoose.Schema(
       trim: true,
     },
 
+    workspaceCode: {
+    type: String,
+    required: true,
+    unique: true
+  },
+
     adminId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",

@@ -15,7 +15,9 @@ export default function Login() {
         {
         email,
         password,
-      })
+      } , {
+        withCredentials: true
+      } )
 
       console.log(res.data)
       navigate("/itmanagerDashboard");

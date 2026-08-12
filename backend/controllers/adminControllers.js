@@ -2,10 +2,20 @@ import Admin from "../models/admin.js"
 import Workspace from "../models/Workspace.js"
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
+import crypto from "crypto";
+
+
+const generateWorkspaceCode = () => {
+  return crypto
+    .randomBytes(4)
+    .toString("hex")
+    .toUpperCase();
+};
+
 
 export const createAdmin = async (req , res) => {
     try{
-        const {userName , email , password , organization , ITWorkspace } = req.body;
+        const {userName , email , password , organization , ITWorkspace , workspaceCode } = req.body;
 
         const existingUser = await Admin.findOne({email})
         if(existingUser){
@@ -24,6 +34,7 @@ export const createAdmin = async (req , res) => {
          const newWorkspace = new Workspace({
             organization,
             ITWorkspace,
+            workspaceCode: generateWorkspaceCode(),
             adminId: newAdmin._id,
         })
         await newAdmin.save();
@@ -99,6 +110,33 @@ export const adminLogin = async (req, res) => {
 
     return res.status(500).json({
       message: "Server error",
+    });
+  }
+};
+
+
+export const getWorkspace = async (req, res) => {
+  try {
+    const workspace = await Workspace.findOne({
+      adminId: req.user.id
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "IT manager dashboard successful",
+      workspace
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error"
     });
   }
 };

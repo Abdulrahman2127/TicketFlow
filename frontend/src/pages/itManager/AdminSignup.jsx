@@ -34,7 +34,7 @@ export default function AdminSignup() {
       setConfirmPassword('')
       setOrganization('')
       setITWorkspace('')
-      navigate('/login')
+      navigate('/itLogin')
     } catch (error) {
       console.log(error.response?.data || error)
     }
