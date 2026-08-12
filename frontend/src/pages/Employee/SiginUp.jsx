@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container'
-import '../Styles/Register.css'
+import '../../Styles/Register.css'
 
 import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom"
@@ -89,7 +89,7 @@ export default function SiginUp() {
           </div>
           <div  style={{display: "flex" , justifyContent: "center" , gap: "5px" , alignItems: "center"}}>
             <p>Already have an account?</p>
-            <div><Link to="/login" className='login-link'>Sign In</Link></div>
+            <div><Link to="/employeeLogin" className='login-link'>Sign In</Link></div>
           </div>
           </section>
           </div>

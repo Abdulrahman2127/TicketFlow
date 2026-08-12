@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container'
-import '../Styles/AdminSignup.css'
+import '../../Styles/AdminSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
@@ -144,7 +144,7 @@ export default function AdminSignup() {
 
         <div className="login-text">
           <p>Already have an account?</p>
-          <Link to="/login">Sign In</Link>
+          <Link to="/itLogin">Sign In</Link>
         </div>
       </section>
     </Container>

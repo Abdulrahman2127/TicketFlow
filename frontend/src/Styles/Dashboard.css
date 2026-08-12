@@ -1,31 +1,58 @@
-
-.section-card{
-    margin-top: 40px;
+.dashboard-header{
     display: flex;
-    justify-content: start;
-    align-items: start;
-    height: 70vh;
-    
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.card-dashboard {
-  background: #F8FAFC;
-  width: 270px;
-  min-height: 145px;
-  max-height: 100px;
-  padding: 20px;
-  box-sizing: border-box;
-  color: #0F172A;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+.dashboard-header p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 15px;
+  
 }
 
-p{
-    color: #64748B;
+
+/* Statistics */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
 }
 
-.view-resume:hover{
-    color: #1846acfc !important;
-    
+.stat-card {
+  background: #111827;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+
+  padding: 22px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
+
+.stat-card p {
+  margin: 0;
+  
+  font-size: 14px;
+}
+
+.stat-card h2 {
+  margin: 10px 0 5px;
+
+  font-size: 30px;
+  
+}
+
+.stat-card span {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+
+
+
+
+

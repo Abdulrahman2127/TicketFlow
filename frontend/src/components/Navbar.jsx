@@ -1,32 +1,23 @@
 import { Link } from 'react-router-dom'
 
+
+
 export default function NavBar() {
   return (
     <>
-      <section
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '50px',
-          alignItems: 'center',
-          marginTop: '15px',
-          padding: '7px',
-          fontSize: '18px',
-        }}
-      >
+      <section style={{display: "flex" , justifyContent: "space-between" , alignItems: "center"}}>
         <div>
-          <Link to="/">Home</Link>
+          <h1 style={{ color: '#2563EB' }}>TicketFlow</h1>
         </div>
-        <div>
-          <Link to="/titleCard">+ Add Resume</Link>
-        </div>
-        <div>
-          <Link to="/">Logout</Link>
-        </div>
-        <div>
-          <Link to="/dashboard">My Resumes</Link>
+        <div style={{ display: "flex" , justifyContent: "center", alignItems: "center" , gap: "20px" , color: "#ffffff78" , cursor: "pointer"}}>
+          
+          
+          <Link>Dashboard</Link>
+          <Link>My Tickets</Link>
+          <Link>Logout</Link>
         </div>
       </section>
+      
     </>
   )
 }

@@ -15,12 +15,17 @@
     "@mui/icons-material": "^9.2.0",
     "@mui/material": "^9.2.0",
     "axios": "^1.19.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^13.1.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
+    "lightswind": "^3.2.3",
     "lucide-react": "^1.28.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "react-router-dom": "^7.18.2",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

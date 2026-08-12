@@ -26,17 +26,11 @@ export const register = async (req, res) => {
   }
 }
 
-export const postLogin = async (req, res) => {
+export const employeeLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    let user = await Admin.findOne({ email });
-    let role = "admin";
-
-    if (!user) {
-      user = await User.findOne({ email });
-      role = "employee";
-    }
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({
@@ -54,12 +48,12 @@ export const postLogin = async (req, res) => {
         message: "Incorrect password!",
       });
     }
-    
+
     const token = jwt.sign(
       {
         id: user._id,
         email: user.email,
-        role: role,
+        role: "employee",
       },
       process.env.JWT_SECRET,
       {
@@ -78,8 +72,8 @@ export const postLogin = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Login successful",
-      role,
+      message: "Employee login successful"
+      
     });
 
   } catch (error) {

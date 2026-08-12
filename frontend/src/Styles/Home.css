@@ -11,13 +11,12 @@ hr {
 }
 .navbar {
   background: #0b0f14;
-  padding: 15px;
+  padding: 2px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
 }
-
 
 .hero {
   width: 100%;

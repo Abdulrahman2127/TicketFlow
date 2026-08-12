@@ -18,7 +18,9 @@ export default function Home(){
           <a href="#Features">Features</a>
           <a href="#roadmap">Coming Soon ⭐</a>
           <a href="#homeItWorks">How it Works</a>
-          <Link to="/login">Loge In</Link>
+          <Link to="/getStarted">Sign up</Link>
+          <Link to="/employeeLogin">Employee</Link>
+          <Link to="/itLogin">IT Manager</Link>
         </div>
       </div>
       <hr></hr>
