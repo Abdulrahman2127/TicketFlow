@@ -2,6 +2,7 @@ import User from '../models/register.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import  Admin from "../models/admin.js"
+import Workspace from "../models/Workspace.js"
 export const register = async (req, res) => {
   try {
     const { userName, email, password } = req.body
@@ -81,6 +82,21 @@ export const employeeLogin = async (req, res) => {
 
     return res.status(500).json({
       message: "Server error",
+    });
+  }
+};
+
+
+export const getWorkspace = async (req, res) => {
+  try {
+    const workspaces = await Workspace.find();
+    res.status(200).json({
+      workspaces
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server error"
     });
   }
 };
