@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import OpenAI from 'openai'
 import employeeRoutes from "./routes/employeeRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js"
+import joinRequestRoutes from "./routes/joinRequestRoutes.js";
 import connectDB from "./config/db.js";
 import cookieParser from 'cookie-parser';
 
@@ -30,6 +31,7 @@ app.get("/", (req,res) => {
 console.log(process.env.OPENROUTER_API_KEY);
 app.use("/api/authentication" , employeeRoutes );
 app.use("/api/admin", adminRoutes);
+app.use("/api/join-request", joinRequestRoutes);
 
 app.listen(PORT , () => {
   console.log(`Server running on http://localhost:${PORT}`)
