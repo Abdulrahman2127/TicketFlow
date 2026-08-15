@@ -3,7 +3,8 @@ import Workspace from "../models/Workspace.js"
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 import crypto from "crypto";
-
+import JoinRequest from "../models/joinRequest.js";
+import User from "../models/register.js";
 
 const generateWorkspaceCode = () => {
   return crypto
@@ -160,6 +161,181 @@ export const adminLogout = async (req, res) => {
 
     return res.status(500).json({
       error: "Server error during logout",
+    });
+  }
+};
+
+
+
+
+export const getJoinRequests = async (req, res) => {
+  try {
+    console.log("Admin ID:", req.user.id);
+    const workspace = await Workspace.findOne({
+      adminId: req.user.id
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found"
+      });
+    }
+
+    const requests = await JoinRequest.find({
+      workspaceId: workspace._id,
+      status: "pending"
+    });
+
+    const result = [];
+
+    for (const request of requests) {
+      const employee = await User.findById(request.employeeId);
+
+      if (employee) {
+        result.push({
+          requestId: request._id,
+          employeeName: employee.userName,
+          employeeEmail: employee.email,
+          status: request.status
+        });
+      }
+    }
+
+    return res.status(200).json({
+      requests: result
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error"
+    });
+  }
+};
+
+export const acceptJoinRequest = async (req, res) => {
+  try {
+    const { requestId } = req.params;
+
+    const request = await JoinRequest.findById(requestId);
+
+    if (!request) {
+      return res.status(404).json({
+        message: "Join request not found",
+      });
+    }
+
+    if (request.status !== "pending") {
+      return res.status(400).json({
+        message: "Request has already been processed",
+      });
+    }
+
+    const workspace = await Workspace.findOne({
+      _id: request.workspaceId,
+      adminId: req.user.id,
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found",
+      });
+    }
+
+    workspace.employees.push(request.employeeId);
+
+    await workspace.save();
+
+    request.status = "accepted";
+
+    await request.save();
+
+    return res.status(200).json({
+      message: "Join request accepted",
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+
+export const getEmployees = async (req, res) => {
+  try {
+    const workspace = await Workspace.findOne({
+      adminId: req.user.id,
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found",
+      });
+    }
+
+    const employees = await User.find({
+      _id: { $in: workspace.employees },
+    }).select("userName email");
+
+    return res.status(200).json({
+      employees,
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+export const rejectJoinRequest = async (req, res) => {
+  try {
+    const { requestId } = req.params;
+
+    const request = await JoinRequest.findById(requestId);
+
+    if (!request) {
+      return res.status(404).json({
+        message: "Join request not found",
+      });
+    }
+
+    if (request.status !== "pending") {
+      return res.status(400).json({
+        message: "Request has already been processed",
+      });
+    }
+
+    const workspace = await Workspace.findOne({
+      _id: request.workspaceId,
+      adminId: req.user.id,
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found",
+      });
+    }
+
+    request.status = "rejected";
+
+    await request.save();
+
+    return res.status(200).json({
+      message: "Join request rejected",
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error",
     });
   }
 };

@@ -25,6 +25,12 @@ const workspaceSchema = new mongoose.Schema(
       ref: "Admin",
       required: true,
     },
+    employees: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+],
   },
   { timestamps: true }
 );

@@ -2,7 +2,9 @@ import User from '../models/register.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import  Admin from "../models/admin.js"
-import Workspace from "../models/Workspace.js"
+import Workspace from "../models/Workspace.js";
+import JoinRequest from "../models/joinRequest.js";
+
 export const register = async (req, res) => {
   try {
     const { userName, email, password } = req.body
@@ -90,26 +92,39 @@ export const searchWorkspace = async (req, res) => {
   try {
     const { workspaceCode } = req.query;
 
+    if (!workspaceCode) {
+      return res.status(400).json({
+        message: "Workspace code is required",
+      });
+    }
+
     const workspace = await Workspace.findOne({
-      workspaceCode: workspaceCode
+      workspaceCode: workspaceCode.trim(),
     });
 
     if (!workspace) {
       return res.status(404).json({
-        message: "Workspace not found"
+        message: "Workspace not found",
       });
     }
 
+    const existingRequest = await JoinRequest.findOne({
+      employeeId: req.user.id,
+      workspaceId: workspace._id,
+    });
+
     return res.status(200).json({
-      message: "Workspace found",
-      workspace
+      workspace,
+      requestStatus: existingRequest
+        ? existingRequest.status
+        : null,
     });
 
   } catch (error) {
     console.log(error);
 
     return res.status(500).json({
-      message: "Server error"
+      message: "Server error",
     });
   }
 };

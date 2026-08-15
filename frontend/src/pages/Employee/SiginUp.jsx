@@ -10,6 +10,7 @@ export default function SiginUp() {
   const [userName , setUserName] = useState("");
   const [email , setEmail] = useState("");
   const [password , setPassword] = useState("");
+
   const postUser = async () => {
     try{
       const res  = await axios.post(`${import.meta.env.VITE_API_URL}/api/authentication/register`, {userName , email , password} );
@@ -17,7 +18,7 @@ export default function SiginUp() {
       setUserName(res.data)
       setEmail(res.data)
       setPassword(res.data)
-      navigate("/login")
+      navigate("/employeeLogin")
     }catch(error){
       console.log(error)
     }

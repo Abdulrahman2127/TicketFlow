@@ -13,11 +13,14 @@ export default function EmployeeDashboard() {
   const [workspaceCode, setWorkspaceCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [requestLoading, setRequestLoading] = useState(false)
+  const [requestStatus, setRequestStatus] = useState(null)
 
   const searchWorkspace = async () => {
     if (!workspaceCode.trim()) {
       setErrorMessage('Please enter a workspace code')
       setWorkspace(null)
+      setRequestStatus(null)
       return
     }
 
@@ -25,15 +28,17 @@ export default function EmployeeDashboard() {
       setLoading(true)
       setWorkspace(null)
       setErrorMessage('')
+      setRequestStatus(null)
 
       const res = await axios.get(
         `http://localhost:5001/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
         {
           withCredentials: true,
-        }
+        },
       )
 
       setWorkspace(res.data.workspace)
+      setRequestStatus(res.data.requestStatus)
     } catch (error) {
       console.log(error)
 
@@ -44,8 +49,39 @@ export default function EmployeeDashboard() {
       }
 
       setWorkspace(null)
+      setRequestStatus(null)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const requestToJoin = async () => {
+    if (!workspace) return
+
+    try {
+      setRequestLoading(true)
+
+      const res = await axios.post(
+        'http://localhost:5001/api/join-request/workspace/request',
+        {
+          workspaceId: workspace._id,
+        },
+        {
+          withCredentials: true,
+        },
+      )
+
+      console.log(res.data)
+
+      setRequestStatus('pending')
+    } catch (error) {
+      console.log(error)
+
+      if (error.response?.status === 400) {
+        setRequestStatus('pending')
+      }
+    } finally {
+      setRequestLoading(false)
     }
   }
 
@@ -58,7 +94,6 @@ export default function EmployeeDashboard() {
       }}
     >
       <Container maxWidth="lg">
-
         {/* Back Button */}
         <Box sx={{ pt: 4 }}>
           <Button
@@ -89,7 +124,6 @@ export default function EmployeeDashboard() {
             pt: 8,
           }}
         >
-
           {/* Header */}
           <Box
             sx={{
@@ -261,7 +295,6 @@ export default function EmployeeDashboard() {
                 }}
               >
                 <CardContent sx={{ p: 3 }}>
-
                   {/* IT Workspace */}
                   <Typography
                     sx={{
@@ -297,6 +330,12 @@ export default function EmployeeDashboard() {
                   {/* Request Button */}
                   <Button
                     variant="outlined"
+                    onClick={requestToJoin}
+                    disabled={
+                      requestLoading ||
+                      requestStatus === 'pending' ||
+                      requestStatus === 'accepted'
+                    }
                     sx={{
                       color: '#3b82f6',
                       borderColor: '#2563eb',
@@ -305,19 +344,24 @@ export default function EmployeeDashboard() {
 
                       '&:hover': {
                         borderColor: '#60a5fa',
-                        backgroundColor:
-                          'rgba(37, 99, 235, 0.08)',
+                        backgroundColor: 'rgba(37, 99, 235, 0.08)',
                       },
                     }}
                   >
-                    Request to Join
+                    {requestLoading
+                      ? 'Sending...'
+                      : requestStatus === 'pending'
+                        ? 'Request Pending'
+                        : requestStatus === 'accepted'
+                          ? 'Joined ✓'
+                          : requestStatus === 'rejected'
+                            ? 'Request to Join'
+                            : 'Request to Join'}
                   </Button>
-
                 </CardContent>
               </Card>
             </Box>
           )}
-
         </Box>
       </Container>
     </Box>
