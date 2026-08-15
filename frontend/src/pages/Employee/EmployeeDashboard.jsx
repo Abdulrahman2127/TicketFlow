@@ -7,27 +7,32 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function EmployeeDashboard() {
   const [workspaces, setWorkspaces] = useState([])
-
+  const [Loading, setLoading] = useState(false)
+  
   const getWorkspace = async () => {
     try {
+      setLoading(true)
       const res = await axios.get(
-        'http://localhost:5001/api/authentication/dashboard',
+        'http://localhost:5001/api/authentication/dashboard' , {withCredentials: true}
       )
 
       setWorkspaces(res.data.workspaces)
-
       console.log(res.data.workspaces)
     } catch (error) {
       console.log(error)
-    }
+    } finally {
+    setLoading(false);
+  }
   }
 
   useEffect(() => {
     getWorkspace()
   }, [])
+
   return (
     <Box
       sx={{
@@ -174,19 +179,22 @@ export default function EmployeeDashboard() {
               mb: 6,
             }}
           />
-           {/* Workspace Found */}
-              <Typography
-                variant="h5"
-                sx={{
-                  color: '#9ca3af',
-                  fontWeight: 600,
-                  mb: 3,
-                }}
-              >
-                Workspace found
-              </Typography>
-          {workspaces.map((workspace) => (
-            <Box
+          <div style={{marginBottom: "20px"}}>
+            <Typography
+              sx={{
+                color: '#9ca3af',
+                fontSize: '32px',
+                mb: 2,
+              }}
+            >Workspace found</Typography>
+          </div>
+            {Loading ? (
+    <Typography>Loading...</Typography>
+  ) : (
+      
+      workspaces.map((workspace) => (
+        <Box
+        
               key={workspace._id}
               sx={{
                 width: '100%',
@@ -194,7 +202,6 @@ export default function EmployeeDashboard() {
                 marginBottom: "20px"
               }}
             >
-             
 
               <Card
                 sx={{
@@ -253,7 +260,10 @@ export default function EmployeeDashboard() {
                 </CardContent>
               </Card>
             </Box>
-          ))}
+      ))
+    )}
+           
+          
         </Box>
       </Container>
     </Box>
