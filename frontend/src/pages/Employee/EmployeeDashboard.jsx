@@ -6,32 +6,48 @@ import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function EmployeeDashboard() {
-  const [workspaces, setWorkspaces] = useState([])
-  const [Loading, setLoading] = useState(false)
-  
-  const getWorkspace = async () => {
+  const [workspace, setWorkspace] = useState(null)
+  const [workspaceCode, setWorkspaceCode] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const searchWorkspace = async () => {
+    if (!workspaceCode.trim()) {
+      setErrorMessage('Please enter a workspace code')
+      setWorkspace(null)
+      return
+    }
+
     try {
       setLoading(true)
+      setWorkspace(null)
+      setErrorMessage('')
+
       const res = await axios.get(
-        'http://localhost:5001/api/authentication/dashboard' , {withCredentials: true}
+        `http://localhost:5001/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
+        {
+          withCredentials: true,
+        }
       )
 
-      setWorkspaces(res.data.workspaces)
-      console.log(res.data.workspaces)
+      setWorkspace(res.data.workspace)
     } catch (error) {
       console.log(error)
-    } finally {
-    setLoading(false);
-  }
-  }
 
-  useEffect(() => {
-    getWorkspace()
-  }, [])
+      if (error.response?.status === 404) {
+        setErrorMessage('Workspace not found')
+      } else {
+        setErrorMessage('Something went wrong. Please try again.')
+      }
+
+      setWorkspace(null)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Box
@@ -42,6 +58,7 @@ export default function EmployeeDashboard() {
       }}
     >
       <Container maxWidth="lg">
+
         {/* Back Button */}
         <Box sx={{ pt: 4 }}>
           <Button
@@ -72,6 +89,7 @@ export default function EmployeeDashboard() {
             pt: 8,
           }}
         >
+
           {/* Header */}
           <Box
             sx={{
@@ -125,6 +143,16 @@ export default function EmployeeDashboard() {
             >
               <TextField
                 fullWidth
+                value={workspaceCode}
+                onChange={(e) => {
+                  setWorkspaceCode(e.target.value)
+                  setErrorMessage('')
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    searchWorkspace()
+                  }
+                }}
                 placeholder="Enter workspace code..."
                 sx={{
                   '& .MuiOutlinedInput-root': {
@@ -152,6 +180,8 @@ export default function EmployeeDashboard() {
               />
 
               <Button
+                onClick={searchWorkspace}
+                disabled={loading}
                 variant="contained"
                 sx={{
                   minWidth: 110,
@@ -164,7 +194,7 @@ export default function EmployeeDashboard() {
                   },
                 }}
               >
-                Search
+                {loading ? 'Searching...' : 'Search'}
               </Button>
             </Box>
           </Box>
@@ -179,29 +209,48 @@ export default function EmployeeDashboard() {
               mb: 6,
             }}
           />
-          <div style={{marginBottom: "20px"}}>
+
+          {/* Loading */}
+          {loading && (
             <Typography
               sx={{
                 color: '#9ca3af',
-                fontSize: '32px',
-                mb: 2,
+                fontSize: '18px',
               }}
-            >Workspace found</Typography>
-          </div>
-            {Loading ? (
-    <Typography>Loading...</Typography>
-  ) : (
-      
-      workspaces.map((workspace) => (
-        <Box
-        
-              key={workspace._id}
+            >
+              Searching...
+            </Typography>
+          )}
+
+          {/* Error */}
+          {!loading && errorMessage && (
+            <Typography
+              sx={{
+                color: '#ef4444',
+                fontSize: '18px',
+              }}
+            >
+              {errorMessage}
+            </Typography>
+          )}
+
+          {/* Workspace Found */}
+          {!loading && workspace && (
+            <Box
               sx={{
                 width: '100%',
                 maxWidth: 700,
-                marginBottom: "20px"
               }}
             >
+              <Typography
+                sx={{
+                  color: '#9ca3af',
+                  fontSize: '32px',
+                  mb: 3,
+                }}
+              >
+                Workspace found
+              </Typography>
 
               <Card
                 sx={{
@@ -212,6 +261,8 @@ export default function EmployeeDashboard() {
                 }}
               >
                 <CardContent sx={{ p: 3 }}>
+
+                  {/* IT Workspace */}
                   <Typography
                     sx={{
                       color: '#f8fafc',
@@ -223,6 +274,7 @@ export default function EmployeeDashboard() {
                     {workspace.ITWorkspace}
                   </Typography>
 
+                  {/* Organization */}
                   <Typography
                     sx={{
                       color: '#9ca3af',
@@ -232,6 +284,7 @@ export default function EmployeeDashboard() {
                     {workspace.organization}
                   </Typography>
 
+                  {/* Workspace Code */}
                   <Typography
                     sx={{
                       color: '#9ca3af',
@@ -241,6 +294,7 @@ export default function EmployeeDashboard() {
                     {workspace.workspaceCode}
                   </Typography>
 
+                  {/* Request Button */}
                   <Button
                     variant="outlined"
                     sx={{
@@ -251,19 +305,19 @@ export default function EmployeeDashboard() {
 
                       '&:hover': {
                         borderColor: '#60a5fa',
-                        backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                        backgroundColor:
+                          'rgba(37, 99, 235, 0.08)',
                       },
                     }}
                   >
                     Request to Join
                   </Button>
+
                 </CardContent>
               </Card>
             </Box>
-      ))
-    )}
-           
-          
+          )}
+
         </Box>
       </Container>
     </Box>

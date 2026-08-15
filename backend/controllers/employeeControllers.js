@@ -86,15 +86,29 @@ export const employeeLogin = async (req, res) => {
   }
 };
 
-export const getWorkspace = async (req, res) => {
+export const searchWorkspace = async (req, res) => {
   try {
-    const workspaces = await Workspace.find();
-    res.status(200).json({
-      workspaces
+    const { workspaceCode } = req.query;
+
+    const workspace = await Workspace.findOne({
+      workspaceCode: workspaceCode
     });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Workspace found",
+      workspace
+    });
+
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+
+    return res.status(500).json({
       message: "Server error"
     });
   }
