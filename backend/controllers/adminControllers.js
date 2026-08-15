@@ -140,3 +140,26 @@ export const getWorkspace = async (req, res) => {
     });
   }
 };
+
+export const adminLogout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite:
+        process.env.NODE_ENV === "production"
+          ? "none"
+          : "lax",
+    });
+
+    return res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      error: "Server error during logout",
+    });
+  }
+};

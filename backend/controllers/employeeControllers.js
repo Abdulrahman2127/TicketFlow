@@ -86,7 +86,6 @@ export const employeeLogin = async (req, res) => {
   }
 };
 
-
 export const getWorkspace = async (req, res) => {
   try {
     const workspaces = await Workspace.find();

@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-
+import axios from 'axios'
 
 export default function NavBar() {
+
   return (
     <>
       <section style={{display: "flex" , justifyContent: "space-between" , alignItems: "center"}}>
@@ -14,7 +15,7 @@ export default function NavBar() {
           
           <Link>Dashboard</Link>
           <Link>My Tickets</Link>
-          <Link>Logout</Link>
+          <button onClick={logout}>Logout</button>
         </div>
       </section>
       

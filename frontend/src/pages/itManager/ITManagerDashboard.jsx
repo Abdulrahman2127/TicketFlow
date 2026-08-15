@@ -1,14 +1,16 @@
 import Container from '@mui/material/Container'
 import '../../Styles/Dashboard.css'
-import { Link } from 'react-router-dom'
+import { Link , useNavigate  } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
+import LogoutIcon from '@mui/icons-material/Logout';
+
 export default function ITManagerDashboard() {
   const [ITWorkspace, setITWorkspace] = useState('')
   const [workspaceCode, setWorkspaceCode] = useState('')
   const [organization, setOrganization] = useState('')
-
+  const navigate = useNavigate()
   const thStyle = {
     textAlign: 'center',
     padding: '14px 16px',
@@ -41,10 +43,25 @@ export default function ITManagerDashboard() {
       console.log(error)
     }
   }
+  
+   const logout = async () => {
+      try{
+        const res = await axios.post("http://localhost:5001/api/admin/logout",{},
+      {
+        withCredentials: true,
+      })
+        console.log(res.data)
+        navigate("/")
+      }catch(error){
+        console.log(error)
+      }
+    }
+ 
 
   useEffect(() => {
     getWorkspace()
   }, [])
+
   if (!ITWorkspace && !organization) {
     return (
       <div style={{ marginTop: '250px', marginLeft: '650px' }}>
@@ -52,6 +69,7 @@ export default function ITManagerDashboard() {
       </div>
     )
   }
+  
   return (
     <Container maxWidth="lg">
       {/* Header */}
@@ -65,7 +83,7 @@ export default function ITManagerDashboard() {
           <Link>Dashboard</Link>
           <a href='#JoinRequests'>Join Requests</a>
           <a href='#Employees'>Employees</a>
-          <Link to="/">Logout</Link>
+          <LogoutIcon style={{cursor: "pointer" , color: "#e01919"}} onClick={logout} to="/">Logout</LogoutIcon>
         </div>
       </div>
       <hr></hr>
