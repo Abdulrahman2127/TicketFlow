@@ -7,7 +7,8 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import axios from 'axios'
 import { useState } from 'react'
-
+import toast from 'react-hot-toast'
+import "../../Styles/Login.css"
 export default function EmployeeDashboard() {
   const [workspace, setWorkspace] = useState(null)
   const [workspaceCode, setWorkspaceCode] = useState('')
@@ -70,7 +71,7 @@ export default function EmployeeDashboard() {
           withCredentials: true,
         },
       )
-
+      toast.success('Join request sent!')
       console.log(res.data)
 
       setRequestStatus('pending')
@@ -346,6 +347,9 @@ export default function EmployeeDashboard() {
                         borderColor: '#60a5fa',
                         backgroundColor: 'rgba(37, 99, 235, 0.08)',
                       },
+                      '&.Mui-disabled': {
+                        backgroundColor: '#aba8a8',
+                      }
                     }}
                   >
                     {requestLoading

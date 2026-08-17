@@ -5,12 +5,15 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
+import toast from 'react-hot-toast'
+
 
 export default function ITManagerDashboard() {
   const [ITWorkspace, setITWorkspace] = useState('')
   const [workspaceCode, setWorkspaceCode] = useState('')
   const [organization, setOrganization] = useState('')
   const [joinRequests, setJoinRequests] = useState([])
+  const [loading, setLoading] = useState(false)
   // Employees
   const [employees, setEmployees] = useState([])
 
@@ -56,6 +59,7 @@ export default function ITManagerDashboard() {
   // Get employees
   const getEmployees = async () => {
     try {
+      setLoading(true)
       const res = await axios.get(
         'http://localhost:5001/api/admin/workspace/employees',
         {
@@ -68,6 +72,8 @@ export default function ITManagerDashboard() {
       console.log(res.data)
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -97,9 +103,10 @@ export default function ITManagerDashboard() {
         {
           withCredentials: true,
         },
-      )
+      )      
 
       setJoinRequests(res.data.requests)
+      
     } catch (error) {
       console.log(error)
     }
@@ -116,10 +123,9 @@ export default function ITManagerDashboard() {
       )
 
       console.log(res.data)
-
       getJoinRequests()
-
       getEmployees()
+      toast.success('accept successfully!');
     } catch (error) {
       console.log(error)
     }
@@ -136,8 +142,7 @@ export default function ITManagerDashboard() {
       )
 
       console.log(res.data)
-
-      // تحديث الطلبات
+      toast.success('Join request rejected!')
       getJoinRequests()
     } catch (error) {
       console.log(error)
@@ -302,10 +307,8 @@ export default function ITManagerDashboard() {
       <br />
 
       <hr />
-
-      {/* Employees */}
-
-      <section
+      {/* Employee*/}
+            <section
         id="Employees"
         style={{
           textAlign: 'center',
@@ -314,44 +317,49 @@ export default function ITManagerDashboard() {
       >
         <h2 style={{ color: '#9ca3af' }}>Employees</h2>
 
-        <div>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-            }}
-          >
-            <thead>
-              <tr>
-                <th style={thStyle}>Name</th>
-                <th style={thStyle}>Email</th>
-                <th style={thStyle}>Role</th>
-                <th style={thStyle}>Status</th>
-                <th style={thStyle}>Action</th>
+        <div></div>
+      
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={thStyle}>Name</th>
+              <th style={thStyle}>Email</th>
+              <th style={thStyle}>Role</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {employees.map((employee) => (
+              <tr key={employee._id}>
+                <td style={tdStyle}>{employee.userName}</td>
+
+                <td style={tdStyle}>{employee.email}</td>
+
+                <td style={tdStyle}>Employee</td>
+
+                <td style={tdStyle}>Active</td>
+
+                <td style={tdStyle}>
+                  <Button variant="outlined" size="small">
+                    View
+                  </Button>
+                </td>
               </tr>
-            </thead>
-
-            <tbody>
-              {employees.map((employee) => (
-                <tr key={employee._id}>
-                  <td style={tdStyle}>{employee.userName}</td>
-
-                  <td style={tdStyle}>{employee.email}</td>
-
-                  <td style={tdStyle}>Employee</td>
-
-                  <td style={tdStyle}>Active</td>
-
-                  <td style={tdStyle}>
-                    <Button variant="outlined" size="small">
-                      View
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      )}
+      
       </section>
 
       <br />
@@ -379,6 +387,7 @@ export default function ITManagerDashboard() {
               color: '#9ca3af',
             }}
           >
+            
             <thead>
               <tr>
                 <th style={thStyle}>Name</th>

@@ -3,6 +3,8 @@ import '../../Styles/AdminSignup.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
+
 export default function AdminSignup() {
   const navigate = useNavigate()
   const [userName, setUserName] = useState('')
@@ -26,7 +28,7 @@ export default function AdminSignup() {
         organization,
         ITWorkspace,
       })
-
+      toast.success('Sign up successfully!')
       console.log(res.data)
       setUserName('')
       setEmail('')

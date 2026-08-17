@@ -7,9 +7,13 @@ import EmployeeDashboard from './pages/Employee/EmployeeDashboard.jsx'
 import AdminSignup from './pages/itManager/AdminSignup.jsx'
 import ITManagerDashboard from "./pages/itManager/ITManagerDashboard.jsx"
 import Login from "./pages/itManager/Login.jsx"
+import { Toaster } from 'react-hot-toast'
+
 function App() {
   return (
     <div>
+        <Toaster />
+
       <Routes>
         <Route path="/"element={<Home />} />
         <Route path="/getStarted" element={<GetStarted />} />

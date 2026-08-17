@@ -3,6 +3,7 @@ import '../../Styles/Login.css'
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 export default function Login() {
 
@@ -21,7 +22,7 @@ export default function Login() {
           password
         } , {withCredentials: true}
       )
-
+      toast.success('Login successfully!')
       console.log(res.data)
 
       navigate("/dashboard")

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom"
 import axios from "axios"
 import { useState } from 'react'
+import toast from 'react-hot-toast'
+
 export default function SiginUp() {
   const navigate = useNavigate()
   const [userName , setUserName] = useState("");
@@ -14,6 +16,7 @@ export default function SiginUp() {
   const postUser = async () => {
     try{
       const res  = await axios.post(`${import.meta.env.VITE_API_URL}/api/authentication/register`, {userName , email , password} );
+      toast.success('Sign up successfully!')
       console.log(res.data)
       setUserName(res.data)
       setEmail(res.data)
