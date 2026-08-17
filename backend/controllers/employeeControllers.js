@@ -88,6 +88,48 @@ export const employeeLogin = async (req, res) => {
   }
 };
 
+
+// WORKSPACE
+
+export const getMyWorkspaceStatus = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const activeWorkspace = await Workspace.findOne({ employees: userId });
+
+    if (activeWorkspace) {
+      return res.status(200).json({
+        isMember: true,
+        requestStatus: "accepted",
+        workspace: activeWorkspace,
+      });
+    }
+
+    const pendingRequest = await JoinRequest.findOne({
+      employeeId: userId,
+      status: "pending",
+    });
+
+    if (pendingRequest) {
+      return res.status(200).json({
+        isMember: false,
+        requestStatus: "pending",
+        workspaceId: pendingRequest.workspaceId,
+      });
+    }
+
+    return res.status(200).json({
+      isMember: false,
+      requestStatus: null,
+      workspace: null,
+    });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 export const searchWorkspace = async (req, res) => {
   try {
     const { workspaceCode } = req.query;
@@ -107,8 +149,7 @@ export const searchWorkspace = async (req, res) => {
         message: "Workspace not found",
       });
     }
-
-    const existingRequest = await JoinRequest.findOne({
+ const existingRequest = await JoinRequest.findOne({
       employeeId: req.user.id,
       workspaceId: workspace._id,
     });
@@ -128,3 +169,5 @@ export const searchWorkspace = async (req, res) => {
     });
   }
 };
+
+

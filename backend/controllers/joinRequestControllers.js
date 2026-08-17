@@ -3,6 +3,7 @@ import Workspace from "../models/Workspace.js";
 
 export const requestToJoin = async (req, res) => {
   try {
+    
     const { workspaceId } = req.body;
 
     if (!workspaceId) {
@@ -10,7 +11,9 @@ export const requestToJoin = async (req, res) => {
         message: "Workspace ID is required",
       });
     }
+    
     console.log("workspaceId:", workspaceId);
+
     const workspace = await Workspace.findById(workspaceId);
     console.log("workspaceId:", workspaceId);
     if (!workspace) {
@@ -18,7 +21,12 @@ export const requestToJoin = async (req, res) => {
         message: "Workspace not found",
       });
     }
-
+    if (workspace.members?.includes(req.user.id) || workspace.ownerId?.toString() === req.user.id) {
+    return res.status(400).json({
+      message: "You are already a member of this workspace",
+    });
+  }
+  
     const existingRequest = await JoinRequest.findOne({
       employeeId: req.user.id,
       workspaceId,

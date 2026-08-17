@@ -5,17 +5,46 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
+import CircularProgress from '@mui/material/CircularProgress'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import "../../Styles/Login.css"
+
 export default function EmployeeDashboard() {
   const [workspace, setWorkspace] = useState(null)
   const [workspaceCode, setWorkspaceCode] = useState('')
   const [loading, setLoading] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
   const [requestLoading, setRequestLoading] = useState(false)
   const [requestStatus, setRequestStatus] = useState(null)
+  const [isMember, setIsMember] = useState(false)
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      try {
+        const res = await axios.get(
+          'http://localhost:5001/api/authentication/workspace/my-status',
+          { withCredentials: true }
+        )
+
+        if (res.data.isMember) {
+          setIsMember(true)
+          setWorkspace(res.data.workspace)
+          setRequestStatus('accepted')
+        } else if (res.data.requestStatus === 'pending') {
+          setRequestStatus('pending')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setInitialLoading(false)
+      }
+    }
+
+    checkStatus()
+  }, [])
 
   const searchWorkspace = async () => {
     if (!workspaceCode.trim()) {
@@ -33,22 +62,22 @@ export default function EmployeeDashboard() {
 
       const res = await axios.get(
         `http://localhost:5001/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       )
 
       setWorkspace(res.data.workspace)
       setRequestStatus(res.data.requestStatus)
+
+      if (res.data.requestStatus === 'accepted') {
+        setIsMember(true)
+      }
     } catch (error) {
       console.log(error)
-
       if (error.response?.status === 404) {
         setErrorMessage('Workspace not found')
       } else {
         setErrorMessage('Something went wrong. Please try again.')
       }
-
       setWorkspace(null)
       setRequestStatus(null)
     } finally {
@@ -64,20 +93,13 @@ export default function EmployeeDashboard() {
 
       const res = await axios.post(
         'http://localhost:5001/api/join-request/workspace/request',
-        {
-          workspaceId: workspace._id,
-        },
-        {
-          withCredentials: true,
-        },
+        { workspaceId: workspace._id },
+        { withCredentials: true }
       )
       toast.success('Join request sent!')
-      console.log(res.data)
-
       setRequestStatus('pending')
     } catch (error) {
       console.log(error)
-
       if (error.response?.status === 400) {
         setRequestStatus('pending')
       }
@@ -86,16 +108,38 @@ export default function EmployeeDashboard() {
     }
   }
 
+  if (initialLoading) {
+    return (
+      <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <CircularProgress sx={{ color: '#2563eb' }} />
+      </Box>
+    )
+  }
+
+  if (isMember && workspace) {
+    return (
+      <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', color: '#f8fafc', p: 4 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
+            {workspace.ITWorkspace} Dashboard
+          </Typography>
+          <Typography variant="h6" sx={{ color: '#9ca3af', mb: 4 }}>
+            Organization: {workspace.organization}
+          </Typography>
+          <Card sx={{ backgroundColor: '#111827', border: '1px solid #263244', p: 3, borderRadius: '12px' }}>
+            <Typography sx={{ color: '#f8fafc' }}>
+              Welcome to your workspace dashboard! Here you can access your IT tools and tasks.
+            </Typography>
+          </Card>
+          
+        </Container>
+      </Box>
+    )
+  }
+
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        backgroundColor: '#0b0f14',
-        color: '#f8fafc',
-      }}
-    >
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', color: '#f8fafc' }}>
       <Container maxWidth="lg">
-        {/* Back Button */}
         <Box sx={{ pt: 4 }}>
           <Button
             href="/"
@@ -104,78 +148,29 @@ export default function EmployeeDashboard() {
               textTransform: 'none',
               fontSize: '16px',
               padding: 0,
-
-              '&:hover': {
-                color: '#ffffff',
-                backgroundColor: 'transparent',
-              },
+              '&:hover': { color: '#ffffff', backgroundColor: 'transparent' },
             }}
           >
             ← Back
           </Button>
         </Box>
 
-        {/* Main Content */}
-        <Box
-          sx={{
-            minHeight: 'calc(100vh - 80px)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            pt: 8,
-          }}
-        >
-          {/* Header */}
-          <Box
-            sx={{
-              textAlign: 'center',
-              mb: 5,
-            }}
-          >
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: 700,
-                color: '#f8fafc',
-                mb: 1,
-              }}
-            >
+        <Box sx={{ minHeight: 'calc(100vh - 80px)', display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 8 }}>
+          <Box sx={{ textAlign: 'center', mb: 5 }}>
+            <Typography variant="h3" sx={{ fontWeight: 700, color: '#f8fafc', mb: 1 }}>
               Welcome 👋
             </Typography>
-
-            <Typography
-              sx={{
-                color: '#9ca3af',
-                fontSize: '17px',
-              }}
-            >
+            <Typography sx={{ color: '#9ca3af', fontSize: '17px' }}>
               Find your IT workspace to get started.
             </Typography>
           </Box>
 
-          {/* Search */}
-          <Box
-            sx={{
-              width: '100%',
-              maxWidth: 700,
-            }}
-          >
-            <Typography
-              sx={{
-                color: '#f8fafc',
-                fontWeight: 600,
-                mb: 1.5,
-              }}
-            >
+          <Box sx={{ width: '100%', maxWidth: 700 }}>
+            <Typography sx={{ color: '#f8fafc', fontWeight: 600, mb: 1.5 }}>
               Workspace Code
             </Typography>
 
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 2,
-              }}
-            >
+            <Box sx={{ display: 'flex', gap: 2 }}>
               <TextField
                 fullWidth
                 value={workspaceCode}
@@ -184,33 +179,18 @@ export default function EmployeeDashboard() {
                   setErrorMessage('')
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    searchWorkspace()
-                  }
+                  if (e.key === 'Enter') searchWorkspace()
                 }}
                 placeholder="Enter workspace code..."
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     color: '#f8fafc',
                     backgroundColor: '#0b0f14',
-
-                    '& fieldset': {
-                      borderColor: '#374151',
-                    },
-
-                    '&:hover fieldset': {
-                      borderColor: '#4b5563',
-                    },
-
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#2563eb',
-                    },
+                    '& fieldset': { borderColor: '#374151' },
+                    '&:hover fieldset': { borderColor: '#4b5563' },
+                    '&.Mui-focused fieldset': { borderColor: '#2563eb' },
                   },
-
-                  '& input::placeholder': {
-                    color: '#9ca3af',
-                    opacity: 1,
-                  },
+                  '& input::placeholder': { color: '#9ca3af', opacity: 1 },
                 }}
               />
 
@@ -223,10 +203,7 @@ export default function EmployeeDashboard() {
                   textTransform: 'none',
                   backgroundColor: '#2563eb',
                   borderRadius: '6px',
-
-                  '&:hover': {
-                    backgroundColor: '#1d4ed8',
-                  },
+                  '&:hover': { backgroundColor: '#1d4ed8' },
                 }}
               >
                 {loading ? 'Searching...' : 'Search'}
@@ -234,101 +211,40 @@ export default function EmployeeDashboard() {
             </Box>
           </Box>
 
-          {/* Divider */}
-          <Box
-            sx={{
-              width: '100%',
-              maxWidth: 700,
-              borderTop: '1px solid #20262e',
-              mt: 7,
-              mb: 6,
-            }}
-          />
+          <Box sx={{ width: '100%', maxWidth: 700, borderTop: '1px solid #20262e', mt: 7, mb: 6 }} />
 
-          {/* Loading */}
           {loading && (
-            <Typography
-              sx={{
-                color: '#9ca3af',
-                fontSize: '18px',
-              }}
-            >
+            <Typography sx={{ color: '#9ca3af', fontSize: '18px' }}>
               Searching...
             </Typography>
           )}
 
-          {/* Error */}
           {!loading && errorMessage && (
-            <Typography
-              sx={{
-                color: '#ef4444',
-                fontSize: '18px',
-              }}
-            >
+            <Typography sx={{ color: '#ef4444', fontSize: '18px' }}>
               {errorMessage}
             </Typography>
           )}
 
-          {/* Workspace Found */}
           {!loading && workspace && (
-            <Box
-              sx={{
-                width: '100%',
-                maxWidth: 700,
-              }}
-            >
-              <Typography
-                sx={{
-                  color: '#9ca3af',
-                  fontSize: '32px',
-                  mb: 3,
-                }}
-              >
+            <Box sx={{ width: '100%', maxWidth: 700 }}>
+              <Typography sx={{ color: '#9ca3af', fontSize: '32px', mb: 3 }}>
                 Workspace found
               </Typography>
 
-              <Card
-                sx={{
-                  backgroundColor: '#111827',
-                  border: '1px solid #263244',
-                  borderRadius: '12px',
-                  boxShadow: 'none',
-                }}
-              >
+              <Card sx={{ backgroundColor: '#111827', border: '1px solid #263244', borderRadius: '12px', boxShadow: 'none' }}>
                 <CardContent sx={{ p: 3 }}>
-                  {/* IT Workspace */}
-                  <Typography
-                    sx={{
-                      color: '#f8fafc',
-                      fontSize: '21px',
-                      fontWeight: 600,
-                      mb: 1,
-                    }}
-                  >
+                  <Typography sx={{ color: '#f8fafc', fontSize: '21px', fontWeight: 600, mb: 1 }}>
                     {workspace.ITWorkspace}
                   </Typography>
 
-                  {/* Organization */}
-                  <Typography
-                    sx={{
-                      color: '#9ca3af',
-                      mb: 1,
-                    }}
-                  >
+                  <Typography sx={{ color: '#9ca3af', mb: 1 }}>
                     {workspace.organization}
                   </Typography>
 
-                  {/* Workspace Code */}
-                  <Typography
-                    sx={{
-                      color: '#9ca3af',
-                      mb: 3,
-                    }}
-                  >
+                  <Typography sx={{ color: '#9ca3af', mb: 3 }}>
                     {workspace.workspaceCode}
                   </Typography>
 
-                  {/* Request Button */}
                   <Button
                     variant="outlined"
                     onClick={requestToJoin}
@@ -342,14 +258,11 @@ export default function EmployeeDashboard() {
                       borderColor: '#2563eb',
                       textTransform: 'none',
                       borderRadius: '6px',
-
                       '&:hover': {
                         borderColor: '#60a5fa',
                         backgroundColor: 'rgba(37, 99, 235, 0.08)',
                       },
-                      '&.Mui-disabled': {
-                        backgroundColor: '#aba8a8',
-                      }
+                      '&.Mui-disabled': { backgroundColor: '#aba8a8' },
                     }}
                   >
                     {requestLoading
@@ -358,9 +271,7 @@ export default function EmployeeDashboard() {
                         ? 'Request Pending'
                         : requestStatus === 'accepted'
                           ? 'Joined ✓'
-                          : requestStatus === 'rejected'
-                            ? 'Request to Join'
-                            : 'Request to Join'}
+                          : 'Request to Join'}
                   </Button>
                 </CardContent>
               </Card>
