@@ -30,12 +30,6 @@ export default function ITManagerDashboard() {
     borderBottom: '1px solid #e0e0e0',
   }
 
-  const buttonStyle = {
-    padding: '7px 16px',
-    border: 'none',
-    borderRadius: '6px',
-    cursor: 'pointer',
-  }
 
   // Get workspace
   const getWorkspace = async () => {

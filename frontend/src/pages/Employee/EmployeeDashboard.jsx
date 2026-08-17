@@ -9,7 +9,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
-import "../../Styles/Login.css"
+import '../../Styles/Login.css'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { Link } from 'react-router-dom'
 
 export default function EmployeeDashboard() {
   const [workspace, setWorkspace] = useState(null)
@@ -26,7 +28,7 @@ export default function EmployeeDashboard() {
       try {
         const res = await axios.get(
           'http://localhost:5001/api/authentication/workspace/my-status',
-          { withCredentials: true }
+          { withCredentials: true },
         )
 
         if (res.data.isMember) {
@@ -62,7 +64,7 @@ export default function EmployeeDashboard() {
 
       const res = await axios.get(
         `http://localhost:5001/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
-        { withCredentials: true }
+        { withCredentials: true },
       )
 
       setWorkspace(res.data.workspace)
@@ -94,7 +96,7 @@ export default function EmployeeDashboard() {
       const res = await axios.post(
         'http://localhost:5001/api/join-request/workspace/request',
         { workspaceId: workspace._id },
-        { withCredentials: true }
+        { withCredentials: true },
       )
       toast.success('Join request sent!')
       setRequestStatus('pending')
@@ -110,7 +112,15 @@ export default function EmployeeDashboard() {
 
   if (initialLoading) {
     return (
-      <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: '#0b0f14',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <CircularProgress sx={{ color: '#2563eb' }} />
       </Box>
     )
@@ -118,27 +128,148 @@ export default function EmployeeDashboard() {
 
   if (isMember && workspace) {
     return (
-      <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', color: '#f8fafc', p: 4 }}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: '#0b0f14',
+          color: '#f8fafc',
+          p: 4,
+        }}
+      >
         <Container maxWidth="lg">
-          <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
-            {workspace.ITWorkspace} Dashboard
-          </Typography>
-          <Typography variant="h6" sx={{ color: '#9ca3af', mb: 4 }}>
-            Organization: {workspace.organization}
-          </Typography>
-          <Card sx={{ backgroundColor: '#111827', border: '1px solid #263244', p: 3, borderRadius: '12px' }}>
-            <Typography sx={{ color: '#f8fafc' }}>
-              Welcome to your workspace dashboard! Here you can access your IT tools and tasks.
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
+              {workspace.ITWorkspace} Dashboard
+            </Typography>
+            <Link to="/">
+              <LogoutIcon
+                style={{
+                  cursor: 'pointer',
+                  color: '#e01919',
+                  padding: '30px',
+                  marginBottom: '20px',
+                  fontSize: '30px',
+                }}
+              >
+                Logout
+              </LogoutIcon>
+            </Link>
+          </div>
+          <div>
+            <Typography variant="h6" sx={{ color: '#9ca3af', mb: 4 }}>
+              Organization: {workspace.organization}
+            </Typography>
+          </div>
+          <Card
+            sx={{
+              backgroundColor: '#111827',
+              border: '1px solid #263244',
+              p: 3,
+              borderRadius: '12px',
+            }}
+          >
+            <Typography sx={{ color: '#cbcccd' }}>
+              Submit a ticket and IT support team will get right on it.
             </Typography>
           </Card>
-          
+          <form style={{ marginTop: '50px' }}>
+  <Card
+    sx={{
+      backgroundColor: '#111827',
+      border: '1px solid #263244',
+      p: 3,
+      borderRadius: '12px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: "20px",
+    }}
+  >
+    <TextField
+      id="title"
+      label="Title"
+      variant="outlined"
+      fullWidth
+      sx={{
+        '& .MuiInputBase-input': { color: '#ffffff' },
+        '& .MuiInputLabel-root': { color: '#94a3b8' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#60a5fa' },
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#2b384e' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#475569' },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#60a5fa',
+        },
+      }}
+    />
+
+    <TextField
+      id="department"
+      label="Department"
+      variant="outlined"
+      fullWidth
+      sx={{
+        '& .MuiInputBase-input': { color: '#ffffff' },
+        '& .MuiInputLabel-root': { color: '#94a3b8' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#60a5fa' },
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#2b384e' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#475569' },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#60a5fa',
+        },
+      }}
+    />
+
+    <TextField
+      id="description"
+      placeholder='Description of the problem or message...'
+      variant="outlined"
+      multiline
+      rows={4}
+      fullWidth
+      sx={{
+        '& .MuiInputBase-input': { color: '#ffffff' },
+        '& .MuiInputLabel-root': { color: '#94a3b8' },
+        '& .MuiInputLabel-root.Mui-focused': { color: '#60a5fa' },
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#2b384e' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#475569' },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          borderColor: '#60a5fa',
+        },
+      }}
+    />
+
+    <Button
+      type="submit"
+      variant="contained"
+      sx={{
+        backgroundColor: '#2563eb',
+        color: '#ffffff',
+        fontWeight: 'bold',
+        py: 1.2,
+        borderRadius: '8px',
+        '&:hover': {
+          backgroundColor: '#1d4ed8',
+        },
+      }}
+    >
+      submit 
+    </Button>
+  </Card>
+</form>
         </Container>
       </Box>
     )
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', color: '#f8fafc' }}>
+    <Box
+      sx={{ minHeight: '100vh', backgroundColor: '#0b0f14', color: '#f8fafc' }}
+    >
       <Container maxWidth="lg">
         <Box sx={{ pt: 4 }}>
           <Button
@@ -155,9 +286,20 @@ export default function EmployeeDashboard() {
           </Button>
         </Box>
 
-        <Box sx={{ minHeight: 'calc(100vh - 80px)', display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 8 }}>
+        <Box
+          sx={{
+            minHeight: 'calc(100vh - 80px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            pt: 8,
+          }}
+        >
           <Box sx={{ textAlign: 'center', mb: 5 }}>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: '#f8fafc', mb: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: 700, color: '#f8fafc', mb: 1 }}
+            >
               Welcome 👋
             </Typography>
             <Typography sx={{ color: '#9ca3af', fontSize: '17px' }}>
@@ -211,7 +353,15 @@ export default function EmployeeDashboard() {
             </Box>
           </Box>
 
-          <Box sx={{ width: '100%', maxWidth: 700, borderTop: '1px solid #20262e', mt: 7, mb: 6 }} />
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: 700,
+              borderTop: '1px solid #20262e',
+              mt: 7,
+              mb: 6,
+            }}
+          />
 
           {loading && (
             <Typography sx={{ color: '#9ca3af', fontSize: '18px' }}>
@@ -231,9 +381,23 @@ export default function EmployeeDashboard() {
                 Workspace found
               </Typography>
 
-              <Card sx={{ backgroundColor: '#111827', border: '1px solid #263244', borderRadius: '12px', boxShadow: 'none' }}>
+              <Card
+                sx={{
+                  backgroundColor: '#111827',
+                  border: '1px solid #263244',
+                  borderRadius: '12px',
+                  boxShadow: 'none',
+                }}
+              >
                 <CardContent sx={{ p: 3 }}>
-                  <Typography sx={{ color: '#f8fafc', fontSize: '21px', fontWeight: 600, mb: 1 }}>
+                  <Typography
+                    sx={{
+                      color: '#f8fafc',
+                      fontSize: '21px',
+                      fontWeight: 600,
+                      mb: 1,
+                    }}
+                  >
                     {workspace.ITWorkspace}
                   </Typography>
 
