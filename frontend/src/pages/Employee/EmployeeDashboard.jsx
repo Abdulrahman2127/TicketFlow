@@ -23,6 +23,11 @@ export default function EmployeeDashboard() {
   const [requestStatus, setRequestStatus] = useState(null)
   const [isMember, setIsMember] = useState(false)
 
+  const [title , setTitle] = useState("");
+  const [department , setDepartment] = useState("");
+  const [description , setDescription] = useState("");
+
+
   useEffect(() => {
     const checkStatus = async () => {
       try {
@@ -107,6 +112,21 @@ export default function EmployeeDashboard() {
       }
     } finally {
       setRequestLoading(false)
+    }
+  }
+
+  const submitTicket = async () => {
+    try{
+      const res = await axios.post("http://localhost:5001/api/submit/tickets" , {title , department , description} , {withCredentials : true} )
+      console.log(res.data);
+      setDepartment("");
+      setTitle("");
+      setDescription("");
+      setDepartment(res.data);
+      setTitle(res.data);
+      setDescription(res.data);
+    }catch(error){
+      console.log(error)
     }
   }
 
@@ -196,15 +216,19 @@ export default function EmployeeDashboard() {
       variant="outlined"
       fullWidth
       sx={{
-        '& .MuiInputBase-input': { color: '#ffffff' },
+        '& .MuiInputBase-input': { color: '#ffffff'  },
         '& .MuiInputLabel-root': { color: '#94a3b8' },
         '& .MuiInputLabel-root.Mui-focused': { color: '#60a5fa' },
         '& .MuiOutlinedInput-notchedOutline': { borderColor: '#2b384e' },
         '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#475569' },
         '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
           borderColor: '#60a5fa',
+         
         },
+        
       }}
+      value={title}
+      onChange={(e) => {setTitle(e.target.value)}}
     />
 
     <TextField
@@ -222,6 +246,8 @@ export default function EmployeeDashboard() {
           borderColor: '#60a5fa',
         },
       }}
+      value={department}
+      onChange={(e) => {setDepartment(e.target.value)}}
     />
 
     <TextField
@@ -241,6 +267,8 @@ export default function EmployeeDashboard() {
           borderColor: '#60a5fa',
         },
       }}
+      value={description}
+      onChange={(e) => {setDescription(e.target.value)}}
     />
 
     <Button
@@ -255,7 +283,12 @@ export default function EmployeeDashboard() {
         '&:hover': {
           backgroundColor: '#1d4ed8',
         },
+        '&:disabled':{
+          background: 'gray'
+        }
       }}
+      onClick={submitTicket}
+      disabled={!title || !department || !description}
     >
       submit 
     </Button>
