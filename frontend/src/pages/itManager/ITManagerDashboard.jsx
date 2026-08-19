@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import toast from 'react-hot-toast'
+import moment from 'moment';
 
 
 export default function ITManagerDashboard() {
@@ -14,22 +15,22 @@ export default function ITManagerDashboard() {
   const [organization, setOrganization] = useState('')
   const [joinRequests, setJoinRequests] = useState([])
   const [loading, setLoading] = useState(false)
-  // Employees
+  const [tickets, setTickets] = useState([])
   const [employees, setEmployees] = useState([])
 
   const navigate = useNavigate()
 
   const thStyle = {
-    textAlign: 'center',
+    
     padding: '14px 16px',
     borderBottom: '2px solid #e0e0e0',
   }
 
   const tdStyle = {
+    
     padding: '14px 16px',
     borderBottom: '1px solid #e0e0e0',
   }
-
 
   // Get workspace
   const getWorkspace = async () => {
@@ -37,14 +38,10 @@ export default function ITManagerDashboard() {
       const res = await axios.get('http://localhost:5001/api/admin/workspace', {
         withCredentials: true,
       })
-
       const workspace = res.data.workspace
-
       setITWorkspace(workspace.ITWorkspace)
       setWorkspaceCode(workspace.workspaceCode)
       setOrganization(workspace.organization)
-
-      console.log(res)
     } catch (error) {
       console.log(error)
     }
@@ -56,14 +53,9 @@ export default function ITManagerDashboard() {
       setLoading(true)
       const res = await axios.get(
         'http://localhost:5001/api/admin/workspace/employees',
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       )
-
       setEmployees(res.data.employees)
-
-      console.log(res.data)
     } catch (error) {
       console.log(error)
     } finally {
@@ -74,16 +66,11 @@ export default function ITManagerDashboard() {
   // Logout
   const logout = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         'http://localhost:5001/api/admin/logout',
         {},
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       )
-
-      console.log(res.data)
-
       navigate('/')
     } catch (error) {
       console.log(error)
@@ -94,13 +81,9 @@ export default function ITManagerDashboard() {
     try {
       const res = await axios.get(
         'http://localhost:5001/api/admin/workspace/requests',
-        {
-          withCredentials: true,
-        },
-      )      
-
+        { withCredentials: true }
+      )
       setJoinRequests(res.data.requests)
-      
     } catch (error) {
       console.log(error)
     }
@@ -108,18 +91,14 @@ export default function ITManagerDashboard() {
 
   const acceptRequest = async (requestId) => {
     try {
-      const res = await axios.patch(
+      await axios.patch(
         `http://localhost:5001/api/admin/workspace/requests/${requestId}/accept`,
         {},
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       )
-
-      console.log(res.data)
       getJoinRequests()
       getEmployees()
-      toast.success('accept successfully!');
+      toast.success('Accepted successfully!')
     } catch (error) {
       console.log(error)
     }
@@ -127,15 +106,11 @@ export default function ITManagerDashboard() {
 
   const rejectRequest = async (requestId) => {
     try {
-      const res = await axios.patch(
+      await axios.patch(
         `http://localhost:5001/api/admin/workspace/requests/${requestId}/reject`,
         {},
-        {
-          withCredentials: true,
-        },
+        { withCredentials: true }
       )
-
-      console.log(res.data)
       toast.success('Join request rejected!')
       getJoinRequests()
     } catch (error) {
@@ -143,15 +118,33 @@ export default function ITManagerDashboard() {
     }
   }
 
+  const fetchTickets = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const res = await axios.get('http://localhost:5001/api/admin/get/ticket', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+      setTickets(res.data.data || [])
+    } catch (error) {
+      console.error('Error fetching tickets:', error.response?.data || error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     getWorkspace()
     getEmployees()
     getJoinRequests()
+    fetchTickets()
   }, [])
 
   if (!ITWorkspace && !organization) {
     return (
-      <div style={{ marginTop: '250px', marginLeft: '650px' }}>
+      <div style={{ marginTop: '250px', textAlign: 'center' }}>
         <h1>Loading...</h1>
       </div>
     )
@@ -165,28 +158,15 @@ export default function ITManagerDashboard() {
           <h1>{ITWorkspace}</h1>
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '20px',
-          }}
-        >
-          <Link>Dashboard</Link>
-
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <Link to="#">Dashboard</Link>
+          <a href="#Tickets">Tickets</a>
           <a href="#JoinRequests">Join Requests</a>
-
           <a href="#Employees">Employees</a>
-
           <LogoutIcon
-            style={{
-              cursor: 'pointer',
-              color: '#e01919',
-            }}
+            style={{ cursor: 'pointer', color: '#e01919' }}
             onClick={logout}
-          >
-            Logout
-          </LogoutIcon>
+          />
         </div>
       </div>
 
@@ -194,103 +174,80 @@ export default function ITManagerDashboard() {
 
       <section style={{ marginBottom: '30px' }}>
         <h4>{organization}</h4>
-
         <p style={{ color: '#9ca3af' }}>
           Invite Code: <span>{workspaceCode}</span>
         </p>
-
         <p style={{ color: '#9ca3af' }}>Here’s an overview of your tickets.</p>
       </section>
 
       {/* Statistics */}
-
       <div className="stats">
         <div className="stat-card">
-          <p>My Tickets</p>
-          <h2>12</h2>
-          <span>Assigned to you</span>
+          <p>Total Tickets</p>
+          <h2>{tickets.length}</h2>
+          <span>All submissions</span>
         </div>
 
         <div className="stat-card">
-          <p>In Progress</p>
-          <h2>4</h2>
-          <span>Currently working</span>
+          <p>Employees</p>
+          <h2>{employees.length}</h2>
+          <span>Active members</span>
         </div>
 
         <div className="stat-card">
-          <p>Completed</p>
-          <h2>38</h2>
-          <span>Tickets solved</span>
+          <p>Pending Requests</p>
+          <h2>{joinRequests.length}</h2>
+          <span>Awaiting approval</span>
         </div>
 
         <div className="stat-card">
-          <p>Urgent</p>
-          <h2>2</h2>
-          <span>Need attention</span>
+          <p>Status</p>
+          <h2>Active</h2>
+          <span>Workspace operational</span>
         </div>
       </div>
 
       <br />
       <br />
-      <br />
 
       <hr />
 
-      {/* Tickets */}
-
-      <section
-        id="Tickets"
-        style={{
-          marginTop: '50px',
-          textAlign: 'center',
-        }}
-      >
+      {/* Tickets Section */}
+      <section id="Tickets" style={{ marginTop: '50px', textAlign: 'center' }}>
         <h2 style={{ color: '#9ca3af' }}>Open Tickets</h2>
-
         <div>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-            }}
-          >
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th style={thStyle}>Message</th>
-                <th style={thStyle}>Role</th>
-                <th style={thStyle}>Status</th>
+                <th style={thStyle}>Title</th>
+                <th style={thStyle}>Department</th>
+                <th style={thStyle}>Date</th>
                 <th style={thStyle}>Action</th>
               </tr>
             </thead>
-
             <tbody>
-              <tr>
-                <td style={tdStyle}>Laptop is not working</td>
-
-                <td style={tdStyle}>Employee</td>
-
-                <td style={tdStyle}>Open</td>
-
-                <td style={tdStyle}>
-                  <Button variant="outlined" size="small">
-                    View
-                  </Button>
-                </td>
-              </tr>
-
-              <tr>
-                <td style={tdStyle}>Wi-Fi connection problem</td>
-
-                <td style={tdStyle}>Employee</td>
-
-                <td style={tdStyle}>In Progress</td>
-
-                <td style={tdStyle}>
-                  <Button variant="outlined" size="small">
-                    View
-                  </Button>
-                </td>
-              </tr>
+              {tickets.length === 0 ? (
+                <tr>
+                  <td colSpan="4" style={{ padding: '20px' }}>
+                    No tickets found.
+                  </td>
+                </tr>
+              ) : (
+                tickets.map((ticket) => (
+                  <tr key={ticket._id}>
+                    <td style={tdStyle}>{ticket.title}</td>
+                    <td style={tdStyle}>{ticket.department}</td>
+                    <td style={tdStyle}>
+                    {moment(ticket.createdAt).format('MMM DD, YYYY')}
+                  </td>
+                    <td style={tdStyle}>
+                      <Button variant="outlined" size="small">
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -298,90 +255,16 @@ export default function ITManagerDashboard() {
 
       <br />
       <br />
-      <br />
 
       <hr />
-      {/* Employee*/}
-            <section
-        id="Employees"
-        style={{
-          textAlign: 'center',
-          marginTop: '50px',
-        }}
-      >
+
+      {/* Employees Section */}
+      <section id="Employees" style={{ textAlign: 'center', marginTop: '50px' }}>
         <h2 style={{ color: '#9ca3af' }}>Employees</h2>
-
-        <div></div>
-      
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <table
-          style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-          }}
-        >
-          <thead>
-            <tr>
-              <th style={thStyle}>Name</th>
-              <th style={thStyle}>Email</th>
-              <th style={thStyle}>Role</th>
-              <th style={thStyle}>Status</th>
-              <th style={thStyle}>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {employees.map((employee) => (
-              <tr key={employee._id}>
-                <td style={tdStyle}>{employee.userName}</td>
-
-                <td style={tdStyle}>{employee.email}</td>
-
-                <td style={tdStyle}>Employee</td>
-
-                <td style={tdStyle}>Active</td>
-
-                <td style={tdStyle}>
-                  <Button variant="outlined" size="small">
-                    View
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      
-      </section>
-
-      <br />
-      <br />
-      <br />
-
-      <hr />
-
-      {/* Join Requests */}
-
-      <section
-        id="JoinRequests"
-        style={{
-          marginTop: '50px',
-          textAlign: 'center',
-        }}
-      >
-        <h1 style={{ color: '#9ca3af' }}>Join Requests</h1>
-
-        <div>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              color: '#9ca3af',
-            }}
-          >
-            
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
                 <th style={thStyle}>Name</th>
@@ -391,18 +274,51 @@ export default function ITManagerDashboard() {
                 <th style={thStyle}>Action</th>
               </tr>
             </thead>
+            <tbody>
+              {employees.map((employee) => (
+                <tr key={employee._id}>
+                  <td style={tdStyle}>{employee.userName}</td>
+                  <td style={tdStyle}>{employee.email}</td>
+                  <td style={tdStyle}>Employee</td>
+                  <td style={tdStyle}>Active</td>
+                  <td style={tdStyle}>
+                    <Button variant="outlined" size="small">
+                      View
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
 
+      <br />
+      <br />
+
+      <hr />
+
+      {/* Join Requests Section */}
+      <section id="JoinRequests" style={{ marginTop: '50px', textAlign: 'center' }}>
+        <h1 style={{ color: '#9ca3af' }}>Join Requests</h1>
+        <div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', color: '#9ca3af' }}>
+            <thead>
+              <tr>
+                <th style={thStyle}>Name</th>
+                <th style={thStyle}>Email</th>
+                <th style={thStyle}>Role</th>
+                <th style={thStyle}>Status</th>
+                <th style={thStyle}>Action</th>
+              </tr>
+            </thead>
             <tbody>
               {joinRequests.map((request) => (
                 <tr key={request.requestId}>
                   <td style={tdStyle}>{request.employeeName}</td>
-
                   <td style={tdStyle}>{request.employeeEmail}</td>
-
                   <td style={tdStyle}>Employee</td>
-
                   <td style={tdStyle}>{request.status}</td>
-
                   <td style={tdStyle}>
                     <Button
                       variant="contained"
@@ -411,7 +327,6 @@ export default function ITManagerDashboard() {
                     >
                       Accept
                     </Button>
-
                     <Button
                       variant="outlined"
                       size="small"
@@ -427,8 +342,6 @@ export default function ITManagerDashboard() {
           </table>
         </div>
       </section>
-
-      <br />
       <br />
       <br />
     </Container>

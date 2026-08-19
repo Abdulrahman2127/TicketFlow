@@ -23,6 +23,7 @@
     "jspdf": "^4.2.1",
     "lightswind": "^3.2.3",
     "lucide-react": "^1.28.0",
+    "moment": "^2.30.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hot-toast": "^2.6.0",

@@ -8,6 +8,7 @@ import {
   acceptJoinRequest,
   getEmployees,
   rejectJoinRequest,
+  getAdminTicketsController
 } from '../controllers/adminControllers.js'
 import { authenticate } from '../middleware/authMiddleware.js'
 const router = express.Router()
@@ -33,5 +34,7 @@ router.patch(
   authenticate,
   rejectJoinRequest
 );
+
+router.get("/get/ticket" , authenticate , getAdminTicketsController);
 
 export default router

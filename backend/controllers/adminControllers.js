@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import crypto from "crypto";
 import JoinRequest from "../models/joinRequest.js";
 import User from "../models/register.js";
-
+import Ticket from "../models/ticket.js";
 const generateWorkspaceCode = () => {
   return crypto
     .randomBytes(4)
@@ -338,4 +338,23 @@ export const rejectJoinRequest = async (req, res) => {
       message: "Server error",
     });
   }
+};
+
+
+
+//GET TICKET FOR WORKSPACE
+
+export const getAdminTicketsController = async (req, res) => {
+    try {
+      
+        const tickets = await Ticket.find({}).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: tickets.length,
+            data: tickets
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
