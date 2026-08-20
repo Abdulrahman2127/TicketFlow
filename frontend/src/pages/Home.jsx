@@ -16,7 +16,7 @@ export default function Home(){
           
           
           <a href="#Features">Features</a>
-          <a href="#roadmap">Coming Soon ⭐</a>
+          
           <a href="#homeItWorks">How it Works</a>
           <Link to="/getStarted">Sign up</Link>
           <Link to="/employeeLogin">Employee</Link>
@@ -74,7 +74,7 @@ export default function Home(){
             </div>
           </div>
 
-          <div className="hero-right"><img src="/cv.png" alt="" /></div>
+          <div className="hero-right"><img src="/createTicket.png" alt="" /></div>
         </div>
       </section>
       <hr></hr>
@@ -128,64 +128,8 @@ export default function Home(){
         </div>
       </section>
       <hr></hr>
-      <section  className="coming-soon" id="roadmap">
-  <div className="container">
-    <h5>ROADMAP</h5>
-
-    <h2>Coming Soon</h2>
-
-    <p className="subtitle">
-      The website will undergo some improvements, and these are the plans.
-    </p>
-
-    <div className="cards">
-
-      <div className="card">
-        <span className="badge">Coming Soon</span>
-        <h3>🔐 User Authentication</h3>
-        <p>
-          It will allow the user to create an account or log in if they already have one.
-        </p>
-      </div>
-
-      <div className="card">
-        <span className="badge">Coming Soon</span>
-        <h3>📂 Resume Dashboard</h3>
-        <p>
-          All resumes can be viewed and managed.
-        </p>
-      </div>
-
       
-
-      <div className="card">
-        <span className="badge">Coming Soon</span>
-        <h3>✏️ Edit Anytime</h3>
-        <p>
-          The resume can be edited later.
-        </p>
-      </div>
-
-      <div className="card">
-        <span className="badge">Coming Soon</span>
-        <h3>🗑 Delete Resumes</h3>
-        <p>
-          You can delete the resume you do not want.
-        </p>
-      </div>
-
-      <div className="card">
-        <span className="badge">Coming Soon</span>
-        <h3>☁️ Cloud Storage</h3>
-        <p>
-          All resumes will be stored in MongoDB🌳.
-        </p>
-      </div>
-
-    </div>
-  </div>
-</section>
-    <hr></hr>
+ 
       <footer
         style={{ marginBottom: '0px', textAlign: 'center', color: '#ffffff5d' , display: "flex" , justifyContent: "center" }}
       >

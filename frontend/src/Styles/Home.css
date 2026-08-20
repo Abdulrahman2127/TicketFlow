@@ -65,23 +65,42 @@ hr {
   color: #9ca3afa9;
 }
 
+/* Hero Right & Image Styling */
 .hero-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 250px;
-}
-img {
-  font-size: 10px !important;
   width: 100%;
-  max-width: 520px;
-  height: auto;
-  transform: perspective(1200px) rotateY(-20deg);
-  transition: transform 0.3s ease;
 }
-img:hover {
-  transform: perspective(1200px) rotateY(0deg);
+
+.hero-right img {
+  width: 100%;
+  max-width: 620px;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  transform: perspective(1000px) rotateY(-10deg) rotateX(3deg);
+}
+
+
+/* Tablet Adjustments */
+@media (max-width: 992px) {
+  .hero-right img {
+    max-width: 500px;
+    transform: none;
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .hero-right img {
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+  }
 }
 button:hover {
   cursor: pointer;
@@ -361,9 +380,9 @@ html {
         display: flex;
         justify-content: center;
     }
-    a{
-        display: none;
-    }
+   .navbar h1{
+    display: none;
+   }
     
   .hero-left h1 {
     font-size: 34px;
