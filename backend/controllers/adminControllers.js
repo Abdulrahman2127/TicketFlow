@@ -271,6 +271,9 @@ export const getEmployees = async (req, res) => {
       adminId: req.user.id,
     });
 
+    console.log("Workspace:", workspace);
+    console.log("Employees IDs:", workspace?.employees);
+
     if (!workspace) {
       return res.status(404).json({
         message: "Workspace not found",
@@ -280,6 +283,8 @@ export const getEmployees = async (req, res) => {
     const employees = await User.find({
       _id: { $in: workspace.employees },
     }).select("userName email");
+
+    console.log("Found employees:", employees);
 
     return res.status(200).json({
       employees,
@@ -345,16 +350,51 @@ export const rejectJoinRequest = async (req, res) => {
 //GET TICKET FOR WORKSPACE
 
 export const getAdminTicketsController = async (req, res) => {
-    try {
-      
-        const tickets = await Ticket.find({}).sort({ createdAt: -1 });
+  try {
+    const tickets = await Ticket.find({})
+      .populate("user", "userName email")
+      .sort({ createdAt: -1 });
 
-        res.status(200).json({
-            success: true,
-            count: tickets.length,
-            data: tickets
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    res.status(200).json({
+      success: true,
+      count: tickets.length,
+      data: tickets
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
+//DELETE TICKET 
+
+export const deleteTicketController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const ticket = await Ticket.findById(id);
+
+    if (!ticket) {
+      return res.status(404).json({
+        message: "Ticket not found",
+      });
     }
+
+    await Ticket.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      message: "Ticket deleted successfully",
+    });
+
+  } catch (error) {
+    console.error("Delete Ticket Error:", error);
+
+    return res.status(500).json({
+      message: "Server error while deleting ticket",
+    });
+  }
 };

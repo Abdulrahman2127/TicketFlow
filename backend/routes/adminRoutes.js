@@ -8,7 +8,8 @@ import {
   acceptJoinRequest,
   getEmployees,
   rejectJoinRequest,
-  getAdminTicketsController
+  getAdminTicketsController,
+  deleteTicketController
 } from '../controllers/adminControllers.js'
 import { authenticate } from '../middleware/authMiddleware.js'
 import { loginLimiter } from "../middleware/rateLimiter.js";
@@ -38,6 +39,11 @@ router.patch(
   rejectJoinRequest
 );
 
+router.delete(
+  "/ticket/admin/delete/:id",
+  authenticate,
+  deleteTicketController
+);
 router.get("/get/ticket" , authenticate , getAdminTicketsController);
 
 export default router

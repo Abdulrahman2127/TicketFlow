@@ -24,6 +24,6 @@ const authSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User  = mongoose.model("User ", authSchema);
+const User  = mongoose.model("User", authSchema);
 
 export default User ;

@@ -119,21 +119,58 @@ export default function ITManagerDashboard() {
   }
 
   const fetchTickets = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const res = await axios.get('http://localhost:5001/api/admin/get/ticket', {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+      "http://localhost:5001/api/admin/get/ticket",
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
-      })
-      setTickets(res.data.data || [])
-    } catch (error) {
-      console.error('Error fetching tickets:', error.response?.data || error.message)
-    } finally {
-      setLoading(false)
-    }
+      }
+    );
+
+    setTickets(res.data.data || []);
+
+  } catch (error) {
+    console.error(
+      "Error fetching tickets:",
+      error.response?.data || error.message
+    );
+  } finally {
+    setLoading(false);
   }
+};
+
+
+const deleteTicket = async (ticketId) => {
+  try {
+    await axios.delete(
+  `http://localhost:5001/api/admin/ticket/admin/delete/${ticketId}`,
+  {
+    withCredentials: true,
+  }
+);
+
+    toast.success("Ticket deleted successfully");
+
+    setTickets((prevTickets) =>
+      prevTickets.filter((ticket) => ticket._id !== ticketId)
+    );
+
+  } catch (error) {
+    console.error(
+      "Error deleting ticket:",
+      error.response?.data || error.message
+    );
+
+    toast.error(
+      error.response?.data?.message || "Failed to delete ticket"
+    );
+  }
+};
 
   useEffect(() => {
     getWorkspace()
@@ -219,6 +256,7 @@ export default function ITManagerDashboard() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
+                <th style={thStyle}>EMP</th>
                 <th style={thStyle}>Title</th>
                 <th style={thStyle}>Department</th>
                 <th style={thStyle}>Date</th>
@@ -226,29 +264,43 @@ export default function ITManagerDashboard() {
               </tr>
             </thead>
             <tbody>
-              {tickets.length === 0 ? (
-                <tr>
-                  <td colSpan="4" style={{ padding: '20px' }}>
-                    No tickets found.
-                  </td>
-                </tr>
-              ) : (
-                tickets.map((ticket) => (
-                  <tr key={ticket._id}>
-                    <td style={tdStyle}>{ticket.title}</td>
-                    <td style={tdStyle}>{ticket.department}</td>
-                    <td style={tdStyle}>
-                    {moment(ticket.createdAt).format('MMM DD, YYYY')}
-                  </td>
-                    <td style={tdStyle}>
-                      <Button variant="outlined" size="small">
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
+  {tickets.length === 0 ? (
+    <tr>
+      <td colSpan="5" style={tdStyle}>
+        No tickets found.
+      </td>
+    </tr>
+  ) : (
+    tickets.map((ticket) => (
+      <tr key={ticket._id}>
+        <td style={tdStyle}>{ticket.user?.userName}</td>
+        <td style={tdStyle}>{ticket.title}</td>
+        <td style={tdStyle}>{ticket.department}</td>
+        <td style={tdStyle}>
+          {moment(ticket.createdAt).format("MMM DD, YYYY")}
+        </td>
+        <td style={tdStyle}>
+           <Button size='small' variant="contained" color="success">
+        Completed
+      </Button>
+          <Button  style={{ marginLeft: "7px" }} variant="outlined" size="small">
+            Details
+          </Button>
+          <Button
+            style={{ marginLeft: "7px" }}
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={() => deleteTicket(ticket._id)}
+          >
+            Delete
+          </Button>
+          
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
           </table>
         </div>
       </section>
@@ -282,9 +334,14 @@ export default function ITManagerDashboard() {
                   <td style={tdStyle}>Employee</td>
                   <td style={tdStyle}>Active</td>
                   <td style={tdStyle}>
-                    <Button variant="outlined" size="small">
-                      View
-                    </Button>
+                    <Button
+                    style={{ marginLeft: "7px" }}
+                    variant="outlined"
+                    size="small"
+                    color="error"
+                  >
+                    Delete
+                  </Button>
                   </td>
                 </tr>
               ))}

@@ -1,5 +1,6 @@
 import Ticket from "../models/ticket.js"
 
+
 export const createTicketController = async (req, res) => {
     try {
         const { title, department, description, workspaceId } = req.body;

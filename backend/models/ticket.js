@@ -21,7 +21,7 @@ const ticketSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "register", 
+      ref: "User", 
       required: true,
     },
   },
