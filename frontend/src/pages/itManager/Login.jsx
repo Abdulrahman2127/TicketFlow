@@ -9,7 +9,7 @@ export default function Login() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState("");
+    
   const postLogin = async () => {
     try {
       const res = await axios.post('http://localhost:5001/api/admin/login', 
@@ -23,9 +23,16 @@ export default function Login() {
       console.log(res.data)
       navigate("/itmanagerDashboard");
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "note found email!")
-    }
+  if (error.response?.status === 429) {
+    toast.error("Too many login attempts. Please try again later.");
+  } else {
+    toast.error(
+      error.response?.data?.message || "Invalid email or password."
+    );
   }
+}
+}
+
 
   return (
     <Container maxWidth={false} className="login-page">
@@ -65,11 +72,7 @@ export default function Login() {
           <button onClick={postLogin} className="CreateBtn" disabled={!email || !password}>
             Login
           </button>
-          <div style={{position: "absolute" , color: "red" , marginTop: "180px" , marginLeft: "130px"}}>
-            {errorMessage && (
-            <p style={{color: "red"}}>{errorMessage}</p>
-          )}
-          </div>
+          
         </div>
         
 

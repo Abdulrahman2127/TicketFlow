@@ -38,8 +38,14 @@ export default function AdminSignup() {
       setITWorkspace('')
       navigate('/itLogin')
     } catch (error) {
-      console.log(error.response?.data || error)
-    }
+  if (error.response?.status === 429) {
+    toast.error("Too many registration attempts. Please try again later.");
+  } else {
+    toast.error(
+      error.response?.data?.message || "Email already exists"
+    );
+  }
+}
   }
 
   return (

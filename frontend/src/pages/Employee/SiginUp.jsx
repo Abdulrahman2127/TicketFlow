@@ -22,9 +22,15 @@ export default function SiginUp() {
       setEmail(res.data)
       setPassword(res.data)
       navigate("/employeeLogin")
-    }catch(error){
-      console.log(error)
-    }
+    } catch (error) {
+  if (error.response?.status === 429) {
+    toast.error("Too many registration attempts. Please try again later.");
+  } else {
+    toast.error(
+      error.response?.data?.message || "Email already exists"
+    );
+  }
+}
   }
 
   

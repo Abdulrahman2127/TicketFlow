@@ -11,10 +11,13 @@ import {
   getAdminTicketsController
 } from '../controllers/adminControllers.js'
 import { authenticate } from '../middleware/authMiddleware.js'
+import { loginLimiter } from "../middleware/rateLimiter.js";
+
+
 const router = express.Router()
 
-router.post('/signup', createAdmin)
-router.post('/login', adminLogin)
+router.post('/signup', loginLimiter , createAdmin)
+router.post('/login', loginLimiter , adminLogin)
 router.get('/workspace', authenticate, getWorkspace)
 router.post('/logout', adminLogout)
 router.get('/workspace/requests', authenticate, getJoinRequests)
