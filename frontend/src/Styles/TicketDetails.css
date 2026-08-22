@@ -1,0 +1,34 @@
+.ticket-details {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 30px;
+  color: white;
+}
+
+.ticket-details h1 {
+  margin-bottom: 30px;
+}
+
+.ticket-info {
+  background: #111722;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #263142;
+}
+
+.ticket-info p {
+  margin: 18px 0;
+  color: #c5cedb;
+}
+
+.ticket-info strong {
+  color: white;
+}
+
+.ticket-info div {
+  margin-top: 25px;
+}
+
+.ticket-info div p {
+  line-height: 1.7;
+}

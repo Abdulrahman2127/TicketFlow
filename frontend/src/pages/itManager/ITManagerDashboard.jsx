@@ -283,9 +283,11 @@ const deleteTicket = async (ticketId) => {
            <Button size='small' variant="contained" color="success">
         Completed
       </Button>
+          <Link to="/details">
           <Button  style={{ marginLeft: "7px" }} variant="outlined" size="small">
             Details
           </Button>
+          </Link>
           <Button
             style={{ marginLeft: "7px" }}
             variant="outlined"

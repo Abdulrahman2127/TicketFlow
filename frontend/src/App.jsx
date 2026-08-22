@@ -8,7 +8,7 @@ import AdminSignup from './pages/itManager/AdminSignup.jsx'
 import ITManagerDashboard from "./pages/itManager/ITManagerDashboard.jsx"
 import Login from "./pages/itManager/Login.jsx"
 import { Toaster } from 'react-hot-toast'
-
+import TicketDetails from './pages/itManager/details.jsx'
 function App() {
   return (
     <div>
@@ -23,6 +23,7 @@ function App() {
         <Route path="/adminSignup" element={<AdminSignup />} />
         <Route path="/itmanagerDashboard" element={<ITManagerDashboard />} />
         <Route path="/itLogin" element={<Login />} />
+        <Route path="/details" element={<TicketDetails />} />
 
       </Routes>
     </div>
