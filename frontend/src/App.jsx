@@ -23,7 +23,7 @@ function App() {
         <Route path="/adminSignup" element={<AdminSignup />} />
         <Route path="/itmanagerDashboard" element={<ITManagerDashboard />} />
         <Route path="/itLogin" element={<Login />} />
-        <Route path="/details" element={<TicketDetails />} />
+        <Route path="/details/ticket/:id" element={<TicketDetails />} />
 
       </Routes>
     </div>

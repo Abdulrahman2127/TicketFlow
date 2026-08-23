@@ -7,6 +7,8 @@ import { Button } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import toast from 'react-hot-toast'
 import moment from 'moment';
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 export default function ITManagerDashboard() {
@@ -17,6 +19,7 @@ export default function ITManagerDashboard() {
   const [loading, setLoading] = useState(false)
   const [tickets, setTickets] = useState([])
   const [employees, setEmployees] = useState([])
+  const [initialLoading, setInitialLoading] = useState(true)
 
   const navigate = useNavigate()
 
@@ -44,6 +47,8 @@ export default function ITManagerDashboard() {
       setOrganization(workspace.organization)
     } catch (error) {
       console.log(error)
+    } finally{
+      setInitialLoading(false)
     }
   }
 
@@ -179,11 +184,19 @@ const deleteTicket = async (ticketId) => {
     fetchTickets()
   }, [])
 
-  if (!ITWorkspace && !organization) {
+ if (initialLoading) {
     return (
-      <div style={{ marginTop: '250px', textAlign: 'center' }}>
-        <h1>Loading...</h1>
-      </div>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: '#0b0f14',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress sx={{ color: '#2563eb' }} />
+      </Box>
     )
   }
 
@@ -283,7 +296,7 @@ const deleteTicket = async (ticketId) => {
            <Button size='small' variant="contained" color="success">
         Completed
       </Button>
-          <Link to="/details">
+          <Link to={`/details/ticket/${ticket._id}`}>
           <Button  style={{ marginLeft: "7px" }} variant="outlined" size="small">
             Details
           </Button>

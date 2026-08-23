@@ -1,7 +1,56 @@
-import { useNavigate } from "react-router-dom";
-import "../../Styles/TicketDetails.css"
+import { useNavigate, useParams } from "react-router-dom";
+import "../../Styles/TicketDetails.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
+
 export default function TicketDetails() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [initialLoading, setInitialLoading] = useState(true)
+
+  const [ticketDetails, setTicketDetails] = useState(null);
+
+  const setDetails = async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/api/admin/details/ticket/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(res.data);
+      setTicketDetails(res.data.data);
+
+    } catch (error) {
+      console.log(error);
+    } finally{
+      setInitialLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setDetails(id);
+  }, [id]);
+
+  
+    if (initialLoading) {
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          backgroundColor: '#0b0f14',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <CircularProgress sx={{ color: '#2563eb' }} />
+      </Box>
+    )
+  }
 
   return (
     <div className="ticket-details">
@@ -16,31 +65,37 @@ export default function TicketDetails() {
       <h1>Ticket Details</h1>
 
       <div className="ticket-info">
+
         <p>
-          <strong>Title:</strong> Laptop screen is not working
+          <strong>Employee:</strong>{" "}
+          {ticketDetails.user?.userName}
         </p>
 
         <p>
-          <strong>Department:</strong> Hardware
+          <strong>Email:</strong>{" "}
+          {ticketDetails.user?.email}
         </p>
 
         <p>
-          <strong>Employee:</strong> Abdulrahman
+          <strong>Title:</strong>{" "}
+          {ticketDetails.title}
         </p>
 
         <p>
-          <strong>Email:</strong> employee@techzone.test
+          <strong>Department:</strong>{" "}
+          {ticketDetails.department}
         </p>
+
+        
 
         <div>
           <strong>Description:</strong>
 
           <p>
-            The laptop screen is not displaying anything.
-            I tried restarting the device, but the problem
-            is still happening.
+            {ticketDetails.description}
           </p>
         </div>
+
       </div>
 
     </div>

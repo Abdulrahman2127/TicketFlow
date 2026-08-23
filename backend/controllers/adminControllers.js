@@ -398,3 +398,34 @@ export const deleteTicketController = async (req, res) => {
     });
   }
 };
+
+//details ticket 
+
+export const detailsTicketController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const ticket = await Ticket.findById(id)
+      .populate("user", "userName email");
+
+    if (!ticket) {
+      return res.status(404).json({
+        success: false,
+        message: "Ticket not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: ticket
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
