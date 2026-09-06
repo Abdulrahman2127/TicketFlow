@@ -429,3 +429,46 @@ export const detailsTicketController = async (req, res) => {
     });
   }
 };
+
+
+export const deleteEmployee = async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+
+    const workspace = await Workspace.findOne({
+      adminId: req.user.id,
+    });
+
+    if (!workspace) {
+      return res.status(404).json({
+        message: "Workspace not found",
+      });
+    }
+
+    const employeeExists = workspace.employees.some(
+      (employee) => employee.toString() === employeeId
+    );
+
+    if (!employeeExists) {
+      return res.status(404).json({
+        message: "Employee not found",
+      });
+    }
+
+    workspace.employees = workspace.employees.filter(
+      (employee) => employee.toString() !== employeeId
+    );
+
+    await workspace.save();
+
+    return res.status(200).json({
+      message: "Employee removed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+};

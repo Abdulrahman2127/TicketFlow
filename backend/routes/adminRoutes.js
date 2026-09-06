@@ -10,7 +10,8 @@ import {
   rejectJoinRequest,
   getAdminTicketsController,
   deleteTicketController,
-  detailsTicketController
+  detailsTicketController,
+  deleteEmployee
 } from '../controllers/adminControllers.js'
 import { authenticate } from '../middleware/authMiddleware.js'
 import { loginLimiter } from "../middleware/rateLimiter.js";
@@ -47,5 +48,7 @@ router.delete(
 );
 router.get("/get/ticket" , authenticate , getAdminTicketsController);
 router.get("/details/ticket/:id" , authenticate , detailsTicketController);
+router.delete("/employees/:employeeId", authenticate, deleteEmployee);
+
 
 export default router;

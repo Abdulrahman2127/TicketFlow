@@ -177,6 +177,30 @@ const deleteTicket = async (ticketId) => {
   }
 };
 
+const handleDeleteEmployee = async (employeeId) => {
+  try {
+    await axios.delete(
+      `http://localhost:5001/api/admin/employees/${employeeId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    setEmployees((currentEmployees) =>
+      currentEmployees.filter(
+        (employee) => employee._id !== employeeId
+      )
+    );
+
+    toast.success("Employee deleted successfully");
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to delete employee"
+    );
+  }
+};
+
   useEffect(() => {
     getWorkspace()
     getEmployees()
@@ -354,6 +378,7 @@ const deleteTicket = async (ticketId) => {
                     variant="outlined"
                     size="small"
                     color="error"
+                    onClick={() => handleDeleteEmployee(employee._id)}
                   >
                     Delete
                   </Button>
