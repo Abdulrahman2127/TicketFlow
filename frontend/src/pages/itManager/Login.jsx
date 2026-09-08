@@ -12,7 +12,7 @@ export default function Login() {
     
   const postLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:5001/api/admin/login', 
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/login`, 
         {
         email,
         password,

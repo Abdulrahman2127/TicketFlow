@@ -32,7 +32,7 @@ export default function EmployeeDashboard() {
     const checkStatus = async () => {
       try {
         const res = await axios.get(
-          'http://localhost:5001/api/authentication/workspace/my-status',
+          `${import.meta.env.VITE_API_URL}/api/authentication/workspace/my-status`,
           { withCredentials: true },
         )
 
@@ -68,7 +68,7 @@ export default function EmployeeDashboard() {
       setRequestStatus(null)
 
       const res = await axios.get(
-        `http://localhost:5001/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
+        `${import.meta.env.VITE_API_URL}/api/authentication/workspace/search?workspaceCode=${workspaceCode.trim()}`,
         { withCredentials: true },
       )
 
@@ -99,7 +99,7 @@ export default function EmployeeDashboard() {
       setRequestLoading(true)
 
       const res = await axios.post(
-        'http://localhost:5001/api/join-request/workspace/request',
+        `${import.meta.env.VITE_API_URL}/api/join-request/workspace/request`,
         { workspaceId: workspace._id },
         { withCredentials: true },
       )
@@ -117,7 +117,7 @@ export default function EmployeeDashboard() {
 
   const submitTicket = async () => {
     try{
-      const res = await axios.post("http://localhost:5001/api/submit/tickets" , {title , department , description} , {withCredentials : true} )
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/submit/tickets` , {title , department , description} , {withCredentials : true} )
       console.log(res.data);
       setDepartment("");
       setTitle("");

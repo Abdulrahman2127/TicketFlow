@@ -38,7 +38,7 @@ export default function ITManagerDashboard() {
   // Get workspace
   const getWorkspace = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/admin/workspace', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/workspace`, {
         withCredentials: true,
       })
       const workspace = res.data.workspace
@@ -57,7 +57,7 @@ export default function ITManagerDashboard() {
     try {
       setLoading(true)
       const res = await axios.get(
-        'http://localhost:5001/api/admin/workspace/employees',
+        `${import.meta.env.VITE_API_URL}/api/admin/workspace/employees`,
         { withCredentials: true }
       )
       setEmployees(res.data.employees)
@@ -72,7 +72,7 @@ export default function ITManagerDashboard() {
   const logout = async () => {
     try {
       await axios.post(
-        'http://localhost:5001/api/admin/logout',
+        `${import.meta.env.VITE_API_URL}/api/admin/logout`,
         {},
         { withCredentials: true }
       )
@@ -85,7 +85,7 @@ export default function ITManagerDashboard() {
   const getJoinRequests = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5001/api/admin/workspace/requests',
+        `${import.meta.env.VITE_API_URL}/api/admin/workspace/requests`,
         { withCredentials: true }
       )
       setJoinRequests(res.data.requests)
@@ -97,7 +97,7 @@ export default function ITManagerDashboard() {
   const acceptRequest = async (requestId) => {
     try {
       await axios.patch(
-        `http://localhost:5001/api/admin/workspace/requests/${requestId}/accept`,
+        `${import.meta.env.VITE_API_URL}/api/admin/workspace/requests/${requestId}/accept`,
         {},
         { withCredentials: true }
       )
@@ -112,7 +112,7 @@ export default function ITManagerDashboard() {
   const rejectRequest = async (requestId) => {
     try {
       await axios.patch(
-        `http://localhost:5001/api/admin/workspace/requests/${requestId}/reject`,
+        `${import.meta.env.VITE_API_URL}/api/admin/workspace/requests/${requestId}/reject`,
         {},
         { withCredentials: true }
       )
@@ -128,7 +128,7 @@ export default function ITManagerDashboard() {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      "http://localhost:5001/api/admin/get/ticket",
+      `${import.meta.env.VITE_API_URL}/api/admin/get/ticket`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -153,7 +153,7 @@ export default function ITManagerDashboard() {
 const deleteTicket = async (ticketId) => {
   try {
     await axios.delete(
-  `http://localhost:5001/api/admin/ticket/admin/delete/${ticketId}`,
+  `${import.meta.env.VITE_API_URL}/api/admin/ticket/admin/delete/${ticketId}`,
   {
     withCredentials: true,
   }
@@ -180,7 +180,7 @@ const deleteTicket = async (ticketId) => {
 const handleDeleteEmployee = async (employeeId) => {
   try {
     await axios.delete(
-      `http://localhost:5001/api/admin/employees/${employeeId}`,
+      `${import.meta.env.VITE_API_URL}/api/admin/employees/${employeeId}`,
       {
         withCredentials: true,
       }

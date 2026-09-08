@@ -21,7 +21,7 @@ export default function AdminSignup() {
         console.log('Passwords do not match')
         return
       }
-      const res = await axios.post('http://localhost:5001/api/admin/signup', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/signup`, {
         userName,
         email,
         password,

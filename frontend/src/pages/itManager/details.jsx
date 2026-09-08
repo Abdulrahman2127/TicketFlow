@@ -15,7 +15,7 @@ export default function TicketDetails() {
   const setDetails = async (id) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/api/admin/details/ticket/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/details/ticket/${id}`,
         {
           withCredentials: true,
         }
