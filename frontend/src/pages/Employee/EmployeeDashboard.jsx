@@ -11,7 +11,8 @@ import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import '../../Styles/Login.css'
 import LogoutIcon from '@mui/icons-material/Logout'
-import { Link } from 'react-router-dom'
+import { Link , useNavigate } from 'react-router-dom'
+import { withEmotionCache } from '@emotion/react'
 
 export default function EmployeeDashboard() {
   const [workspace, setWorkspace] = useState(null)
@@ -27,6 +28,7 @@ export default function EmployeeDashboard() {
   const [department , setDepartment] = useState("");
   const [description , setDescription] = useState("");
 
+    const navigate = useNavigate()
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -130,6 +132,17 @@ export default function EmployeeDashboard() {
     }
   }
 
+
+  const logout = async () => {
+    try{
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/authentication/logout/emp` , {} , { withCredentials: true })
+      navigate("/")
+      console.log(res.data)
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   if (initialLoading) {
     return (
       <Box
@@ -167,7 +180,7 @@ export default function EmployeeDashboard() {
             <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
               {workspace.ITWorkspace} Dashboard
             </Typography>
-            <Link to="/">
+            
               <LogoutIcon
                 style={{
                   cursor: 'pointer',
@@ -176,10 +189,11 @@ export default function EmployeeDashboard() {
                   marginBottom: '20px',
                   fontSize: '30px',
                 }}
+                onClick={logout}
               >
                 Logout
               </LogoutIcon>
-            </Link>
+            
           </div>
           <div>
             <Typography variant="h6" sx={{ color: '#9ca3af', mb: 4 }}>
